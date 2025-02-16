@@ -11,5 +11,13 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;MSTest::F8783CF2-966F-4D9B-97DE-6F70A7E1F61E::net9.0::Lab2.Tests.Math.PrimeCheckerTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;MSTest::F8783CF2-966F-4D9B-97DE-6F70A7E1F61E::net9.0::Lab2.Tests.Math.PrimeGeneratorTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::F8783CF2-966F-4D9B-97DE-6F70A7E1F61E::net9.0::Lab2.Tests.Math.SimplifyTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ec819e5b_002D2cff_002D488b_002Db322_002D9968e1442414/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="PrimeCheckerTests #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::F8783CF2-966F-4D9B-97DE-6F70A7E1F61E::net9.0::Lab2.Tests.Math.PrimeCheckerTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::F8783CF2-966F-4D9B-97DE-6F70A7E1F61E::net9.0::Lab2.Tests.Math.PrimeGeneratorTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::F8783CF2-966F-4D9B-97DE-6F70A7E1F61E::net9.0::Lab2.Tests.Math.SimplifyTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

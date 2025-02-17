@@ -4,8 +4,7 @@ public static class ThreeGrams
 {
     public static string GetMostPopularThreeGram(string input)
     {
-        var threeGrams = FindInText(input);
-        return threeGrams
+        return FindInText(input)
             .MaxBy(x => x.Value).Key;
     }
 

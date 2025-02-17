@@ -2,7 +2,7 @@ namespace Lab2.Common.Statistics;
 
 public static class ThreeGrams
 {
-    public static string MostPopularThreeGram(string input)
+    public static string GetMostPopularThreeGram(string input)
     {
         var threeGrams = FindInText(input);
         return threeGrams

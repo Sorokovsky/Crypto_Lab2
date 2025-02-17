@@ -41,10 +41,8 @@ public static class ThreeGrams
         for (var i = 2; i < input.Length; i++)
         {
             var startIndex = i - 2;
-            var endIndex = i;
-            var threeGram = $"{input[startIndex]}{input[endIndex - 1]}{input[endIndex]}";
-            if(result.ContainsKey(threeGram)) result[threeGram]++;
-            else result.Add(threeGram, 1);
+            var threeGram = $"{input[startIndex]}{input[i - 1]}{input[i]}";
+            if(!result.TryAdd(threeGram, 1)) result[threeGram]++;
         }
         return result;
     }

@@ -1,3 +1,3 @@
-﻿namespace Lab2.Common.Tools;
+﻿namespace Lab2.Visionary;
 
 public record VisionaryKey(char Row, char Column);

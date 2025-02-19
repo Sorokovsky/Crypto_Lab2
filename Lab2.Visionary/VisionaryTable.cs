@@ -1,4 +1,6 @@
-﻿namespace Lab2.Common.Tools;
+﻿using Lab2.Common.Tools;
+
+namespace Lab2.Visionary;
 
 public class VisionaryTable
 {

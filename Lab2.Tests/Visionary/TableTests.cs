@@ -1,4 +1,4 @@
-﻿using Lab2.Common.Tools;
+﻿using Lab2.Visionary;
 
 namespace Lab2.Tests.Visionary;
 

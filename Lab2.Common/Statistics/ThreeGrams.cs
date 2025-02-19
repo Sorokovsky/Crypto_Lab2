@@ -1,8 +1,10 @@
+using System.Collections.Concurrent;
+
 namespace Lab2.Common.Statistics;
 
 public static class ThreeGrams
 {
-    private static readonly Dictionary<string, Dictionary<string, List<int>>> ThreeGramsByText = new();
+    private static readonly ConcurrentDictionary<string, Dictionary<string, List<int>>> ThreeGramsByText = new();
 
     public static string GetMostPopularThreeGram(string input)
     {

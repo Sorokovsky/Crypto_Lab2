@@ -67,9 +67,9 @@ public class VisionaryEncryptor : IEncryptor
     private char GetDecryptedLetter(char text, char key)
     {
         var letter = ' ';
-        for (var i = 0; i < _alphabet.Length; i++)
+        foreach (var t in _alphabet)
         {
-            letter = _alphabet[i];
+            letter = t;
             var output = _table.GetByKey(new VisionaryKey(key, letter));
             if (output == char.ToUpper(text)) break;
         }

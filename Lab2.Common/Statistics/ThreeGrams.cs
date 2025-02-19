@@ -32,7 +32,7 @@ public static class ThreeGrams
 
     private static Dictionary<string, List<int>> Collect(string input)
     {
-        var result = ThreeGramsByText.GetValueOrDefault(input);
+        var result = ThreeGramsByText.GetValueOrDefault(input.ToUpper());
         if (result != null) return result;
         result = new Dictionary<string, List<int>>();
         ThreeGramsByText.TryAdd(input, result);

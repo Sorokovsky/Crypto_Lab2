@@ -42,11 +42,8 @@ public static class ThreeGrams
             var centerIndex = i - 1;
             var endIndex = i;
             var threeGram = $"{input[startIndex]}{input[centerIndex]}{input[endIndex]}";
-            if (!result.TryAdd(threeGram, [startIndex]))
-            {
-                var item = result.GetValueOrDefault(threeGram);
-                item?.Add(startIndex);
-            }
+            if (result.TryAdd(threeGram, [startIndex])) continue;
+            result.GetValueOrDefault(threeGram)?.Add(startIndex);
         }
 
         return result;

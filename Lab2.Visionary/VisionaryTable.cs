@@ -4,17 +4,21 @@ namespace Lab2.Visionary;
 
 public class VisionaryTable
 {
+    private readonly string _alphabet;
     private readonly List<List<char>> _table;
 
-    private VisionaryTable(List<List<char>> table)
+    private VisionaryTable(List<List<char>> table, string alphabet)
     {
         _table = table;
+        _alphabet = alphabet;
     }
 
     public char GetByKey(VisionaryKey key)
     {
-        var row = _table.ElementAt(key.Row);
-        return row.ElementAt(key.Column);
+        var rowIndex = _alphabet.IndexOf(key.Row);
+        var columnIndex = _alphabet.IndexOf(key.Column);
+        var row = _table.ElementAt(rowIndex);
+        return row.ElementAt(columnIndex);
     }
 
     public static VisionaryTable Generate(string alphabet = Alphabets.En)
@@ -32,7 +36,7 @@ public class VisionaryTable
             result.Add(row);
         }
 
-        return new VisionaryTable(result);
+        return new VisionaryTable(result, alphabet);
     }
 
     public override string ToString()

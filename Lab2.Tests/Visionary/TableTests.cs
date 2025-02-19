@@ -13,4 +13,14 @@ public class TableTests
         var result = VisionaryTable.Generate().ToString();
         Assert.AreEqual(output, result);
     }
+
+    [TestMethod]
+    public void ShouldCorrectEnGetting()
+    {
+        var table = VisionaryTable.Generate();
+        const char expected = 'N';
+        VisionaryKey key = new('E', 'J');
+        var result = table.GetByKey(key);
+        Assert.AreEqual(expected, result);
+    }
 }

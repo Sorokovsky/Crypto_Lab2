@@ -15,8 +15,8 @@ public class VisionaryTable
 
     public char GetByKey(VisionaryKey key)
     {
-        var rowIndex = _alphabet.IndexOf(key.Row);
-        var columnIndex = _alphabet.IndexOf(key.Column);
+        var rowIndex = _alphabet.IndexOf(char.ToUpper(key.Row));
+        var columnIndex = _alphabet.IndexOf(char.ToUpper(key.Column));
         var row = _table.ElementAt(rowIndex);
         return row.ElementAt(columnIndex);
     }

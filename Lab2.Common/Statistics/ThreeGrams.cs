@@ -2,6 +2,8 @@ namespace Lab2.Common.Statistics;
 
 public static class ThreeGrams
 {
+    private static readonly Dictionary<string, Dictionary<string, List<int>>> ThreeGramsByText = new();
+
     public static string GetMostPopularThreeGram(string input)
     {
         return FindInText(input)
@@ -17,26 +19,34 @@ public static class ThreeGrams
 
     private static List<int> CollectIndexes(string input, string threeGram)
     {
-        var result = new List<int>();
-        for (var i = 2; i < input.Length; i++)
-        {
-            var startIndex = i - 2;
-            var endIndex = i;
-            var currentThreeGram = $"{input[startIndex]}{input[endIndex - 1]}{input[endIndex]}";
-            if (currentThreeGram == threeGram) result.Add(startIndex);
-        }
-
-        return result;
+        var indexes = Collect(input)
+            .First(x => x.Key == threeGram);
+        return indexes.Value;
     }
 
     private static Dictionary<string, int> FindInText(string input)
     {
-        var result = new Dictionary<string, int>();
+        return Collect(input)
+            .ToDictionary(x => x.Key, x => x.Value.Count);
+    }
+
+    private static Dictionary<string, List<int>> Collect(string input)
+    {
+        var result = ThreeGramsByText.GetValueOrDefault(input);
+        if (result != null) return result;
+        result = new Dictionary<string, List<int>>();
+        ThreeGramsByText.TryAdd(input, result);
         for (var i = 2; i < input.Length; i++)
         {
             var startIndex = i - 2;
-            var threeGram = $"{input[startIndex]}{input[i - 1]}{input[i]}";
-            if (!result.TryAdd(threeGram, 1)) result[threeGram]++;
+            var centerIndex = i - 1;
+            var endIndex = i;
+            var threeGram = $"{input[startIndex]}{input[centerIndex]}{input[endIndex]}";
+            if (!result.TryAdd(threeGram, [startIndex]))
+            {
+                var item = result.GetValueOrDefault(threeGram);
+                item?.Add(startIndex);
+            }
         }
 
         return result;

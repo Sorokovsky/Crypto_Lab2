@@ -1,4 +1,5 @@
-﻿using Lab2.Common.Math;
+﻿using Lab2.Common.Interfaces;
+using Lab2.Common.Math;
 using Lab2.Common.Statistics;
 using Lab2.Common.Tools;
 
@@ -6,15 +7,16 @@ namespace Lab2.Common.Analysing;
 
 public static class CypherAnalyzer
 {
-    public static int GetKeyLength(string text)
+    private static int GetKeyLength(string text)
     {
         text = PrepareText(text);
         var popularThreeGram = ThreeGrams.GetMostPopularThreeGram(text);
+        Console.WriteLine($"Найпопулярніша триграма: {popularThreeGram}.");
         var lengthBetweenFirstLetters = ThreeGrams.GetDestinations(text, popularThreeGram);
         return Number.Gcd(lengthBetweenFirstLetters);
     }
 
-    public static TextTable SplitByColumns(string text, int keyLength)
+    private static TextTable SplitByColumns(string text, int keyLength)
     {
         text = PrepareText(text);
         List<List<char>> result = [];
@@ -57,7 +59,7 @@ public static class CypherAnalyzer
         return result;
     }
 
-    public static StatisticsBox GetStatistics(TextTable table, int keyLength)
+    private static StatisticsBox GetStatistics(TextTable table, int keyLength)
     {
         var result = new Dictionary<int, Dictionary<char, int>>();
         for (var i = 0; i < keyLength; i++)
@@ -70,5 +72,18 @@ public static class CypherAnalyzer
         }
 
         return new StatisticsBox(result);
+    }
+
+    public static string TryHack(string text, IEncryptor encryptor, Func<IEncryptor, string, string> choosingKey)
+    {
+        var keyLength = GetKeyLength(text);
+        Console.WriteLine($"Довжина ключа: {keyLength}.");
+        var split = SplitByColumns(text, keyLength);
+        Console.WriteLine("По рядкам.");
+        Console.WriteLine(split);
+        var stats = GetStatistics(split, keyLength);
+        Console.WriteLine("Статистика: ");
+        Console.WriteLine(stats);
+        return choosingKey(encryptor, text);
     }
 }

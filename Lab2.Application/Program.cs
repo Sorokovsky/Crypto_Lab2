@@ -10,13 +10,12 @@ public static class Program
     {
         const string text =
             "Mrgf niatxz qv ffnux ff ybt ce tyx iix gzka cjlrgk qyeix oy yau apx yij lhprgv tsfp a ynny urzophx wyxlf rnu t zbrfk ahfw fzesyu wzmo llbsbzb jhfplx khv ivmztzhu iw ae tiuedfglx diex iyjiux pn neix abv cintvciez yydazgz iw tyx jiktrzlm ff kal gznvkz xiimxu unap gv xfusm is khv yvoc rvxr iw tyx zoirfnuxznx ldudp zg vhv ow moyje r lauglv tux thrbu qzty t xornkbas ff xghqvd shuyj syhdyu wyxyy khv tucdac ahx sevg jiefzglx r sbxsykoe ppny a ktuace fy ilfwe ahci auallznx mv ck lrr hgfnx moy ueskpm.";
-        var output = CypherAnalyzer.TryHack(text, new VisionaryEncryptor(), Choosing);
-        Console.WriteLine(output);
+        CypherAnalyzer.TryHack(text, new VisionaryEncryptor(), Choosing);
     }
 
     private static string Choosing(IEncryptor encryptor, string text)
     {
-        var result = string.Empty;
+        string result;
         while (true)
             try
             {
@@ -24,7 +23,7 @@ public static class Program
                 Console.Write(">> ");
                 var key = Console.ReadLine() ?? string.Empty;
                 result = encryptor.Decrypt(text, key);
-                Console.WriteLine($"З ключем: {key}.");
+                Console.WriteLine($"З ключем: \"{key}\".");
                 Console.WriteLine($"Вийшло: \"{result}\"");
                 Console.WriteLine("Ви задоволені (0-Так, 1-Ні): ");
                 var operation = Console.ReadLine() ?? string.Empty;

@@ -46,4 +46,29 @@ public static class CypherAnalyzer
 
         return result;
     }
+
+    private static Dictionary<char, int> CollectCounting(List<char> letters)
+    {
+        var result = new Dictionary<char, int>();
+        foreach (var letter in letters)
+            if (!result.TryAdd(letter, 1))
+                result[letter]++;
+
+        return result;
+    }
+
+    public static StatisticsBox GetStatistics(TextTable table, int keyLength)
+    {
+        var result = new Dictionary<int, Dictionary<char, int>>();
+        for (var i = 0; i < keyLength; i++)
+        {
+            var row = table.GetRow(i);
+            result.Add(i, CollectCounting(row)
+                .OrderByDescending(x => x.Value)
+                .Take(keyLength)
+                .ToDictionary(x => x.Key, x => x.Value));
+        }
+
+        return new StatisticsBox(result);
+    }
 }

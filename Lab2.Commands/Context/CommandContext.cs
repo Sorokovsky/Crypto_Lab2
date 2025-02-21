@@ -37,11 +37,13 @@ public class CommandContext : ICommandContext
 
     public void Append(params List<ICommand> commands)
     {
-        foreach (var command in commands)
-        {
-            command.Number = _currentNumber++;
-            _commands.Add(command);
-        }
+        commands.ForEach(AddCommand);
+    }
+
+    private void AddCommand(ICommand command)
+    {
+        command.Number = _currentNumber++;
+        _commands.Add(command);
     }
 
     private void Loop()
@@ -70,7 +72,7 @@ public class CommandContext : ICommandContext
         return command;
     }
 
-    private void WaitForContinue()
+    private static void WaitForContinue()
     {
         Console.WriteLine("Натисніть будь-яку кнопку для продовження...");
         Console.Read();

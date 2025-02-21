@@ -8,15 +8,17 @@ namespace Lab2.Commands.Context;
 public class CommandContext : ICommandContext
 {
     private readonly List<ICommand> _commands = [];
+    private readonly Encoding _encoding;
+
     private bool _canExit;
 
     private int _currentNumber;
+    private Encoding _prevInputEncoding;
+    private Encoding _prevOutputEncoding;
 
-    public CommandContext(string title)
+    public CommandContext(string title, Encoding encoding)
     {
-        var encoding = Encoding.UTF8;
-        Console.InputEncoding = encoding;
-        Console.OutputEncoding = encoding;
+        _encoding = encoding;
         Append(new ExitCommand());
         Title = title;
     }
@@ -33,7 +35,9 @@ public class CommandContext : ICommandContext
     public void Invoke(IExitable? exitable = null)
     {
         _canExit = false;
+        SetupEncoding();
         Loop();
+        ClearEncoding();
     }
 
     public void Append(params List<ICommand> commands)
@@ -77,5 +81,20 @@ public class CommandContext : ICommandContext
     {
         Console.WriteLine("Натисніть будь-яку кнопку для продовження...");
         Console.ReadKey();
+    }
+
+    private void SetupEncoding()
+    {
+        _prevInputEncoding = Console.InputEncoding;
+        _prevOutputEncoding = Console.OutputEncoding;
+        Console.InputEncoding = _encoding;
+        Console.OutputEncoding = _encoding;
+    }
+
+
+    private void ClearEncoding()
+    {
+        Console.InputEncoding = _prevInputEncoding;
+        Console.OutputEncoding = _prevOutputEncoding;
     }
 }

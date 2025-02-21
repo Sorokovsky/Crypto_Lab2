@@ -16,6 +16,7 @@ public class CommandContext : ICommandContext
         var encoding = Encoding.UTF8;
         Console.InputEncoding = encoding;
         Console.OutputEncoding = encoding;
+        Append(new ExitCommand());
         Title = title;
     }
 
@@ -31,7 +32,6 @@ public class CommandContext : ICommandContext
     public void Invoke(IExitable? exitable = null)
     {
         _canExit = false;
-        Append(new ExitCommand());
         Loop();
     }
 
@@ -75,6 +75,7 @@ public class CommandContext : ICommandContext
     private static void WaitForContinue()
     {
         Console.WriteLine("Натисніть будь-яку кнопку для продовження...");
-        Console.Read();
+        Console.ReadKey();
+        Console.Clear();
     }
 }

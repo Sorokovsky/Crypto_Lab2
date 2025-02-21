@@ -13,4 +13,8 @@
       <ProjectReference Include="..\Lab2.Visionary\Lab2.Visionary.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="bin\Debug\net9.0\files\test.txt"/>
+    </ItemGroup>
+
 </Project>

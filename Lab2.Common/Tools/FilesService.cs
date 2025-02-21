@@ -23,7 +23,7 @@ public class FilesService
         return reader.ReadToEnd();
     }
 
-    public void Write(string path, string text, bool rewrite = false)
+    private void Write(string path, string text, bool rewrite = false)
     {
         var fullPath = GetPath(path);
         if (Exists(path) is false) throw new ArgumentException("Файлу не знайдено.");
@@ -40,11 +40,7 @@ public class FilesService
 
     public void Create(string path, string text)
     {
-        var fullPath = GetPath(path);
-        if (Exists(path)) throw new ArgumentException("Файл вже існує.");
-        using var stream = File.Open(fullPath, FileMode.Create);
-        using var writer = new StreamWriter(stream);
-        writer.Write(text);
+        Write(path, text);
     }
 
     private string GetPath(string filePath)

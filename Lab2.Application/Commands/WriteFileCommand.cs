@@ -1,4 +1,5 @@
-﻿using Lab2.Commands.Commands;
+﻿using Lab2.Commands.Chooser;
+using Lab2.Commands.Commands;
 using Lab2.Commands.Interfaces;
 using Lab2.Common.Tools;
 
@@ -12,22 +13,12 @@ public class WriteFileCommand : BasicCommand
     {
         var files = new FilesService();
         var action = files.Create;
-        Console.Write("Введіть назву файлу: ");
-        var name = Console.ReadLine() ?? string.Empty;
+        var name = Choosing.Text("назву файлу");
         var file = $"{name}.txt";
-        Console.Write("Введіть текст для запису: ");
-        var text = Console.ReadLine() ?? string.Empty;
+        var text = Choosing.Text("текст для запису");
         if (files.Exists(file))
         {
-            Console.Write("Файл існує пересаписати (0-ні, 1-так): ");
-            var choose = int.Parse(Console.ReadLine() ?? string.Empty);
-            while (choose != 0 && choose != 1)
-            {
-                Console.Write("Відповідь не розпізнана, спробуйте ще (0-ні, 1-так): ");
-                choose = int.Parse(Console.ReadLine() ?? string.Empty);
-            }
-
-            if (choose == 0) return;
+            if (Choosing.Binary("Файл існує пересаписати") is false) return;
             action = files.Rewrite;
         }
 

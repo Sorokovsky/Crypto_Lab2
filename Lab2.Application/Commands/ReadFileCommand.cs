@@ -1,4 +1,5 @@
-﻿using Lab2.Commands.Commands;
+﻿using Lab2.Commands.Chooser;
+using Lab2.Commands.Commands;
 using Lab2.Commands.Interfaces;
 using Lab2.Common.Tools;
 
@@ -11,8 +12,7 @@ public class ReadFileCommand : BasicCommand
     public override void Invoke(IExitable? exitable)
     {
         var files = new FilesService();
-        Console.Write("Введіть назву файлу: ");
-        var file = $"{Console.ReadLine() ?? string.Empty}.txt";
+        var file = $"{Choosing.Text("Введіть назву файлу")}.txt";
         var text = files.Read(file);
         Console.WriteLine($"Зміст файлу {file}: ");
         Console.WriteLine(text);

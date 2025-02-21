@@ -77,6 +77,5 @@ public class CommandContext : ICommandContext
     {
         Console.WriteLine("Натисніть будь-яку кнопку для продовження...");
         Console.ReadKey();
-        Console.Clear();
     }
 }

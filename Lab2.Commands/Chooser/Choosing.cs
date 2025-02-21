@@ -29,4 +29,24 @@ public static class Choosing
 
         return item;
     }
+
+    public static string Text(string name)
+    {
+        Console.Write($"Введіть {name}: ");
+        return Console.ReadLine() ?? string.Empty;
+    }
+
+    public static bool Binary(string question)
+    {
+        var variants = "(0-ні, 1-так)";
+        Console.Write($"{question} {variants}: ");
+        var choise = int.Parse(Console.ReadLine() ?? string.Empty);
+        while (choise != 0 && choise != 1)
+        {
+            Console.Write($"Відповідь не розпізнано, спробуйте ще {variants}: ");
+            choise = int.Parse(Console.ReadLine() ?? string.Empty);
+        }
+
+        return choise == 1;
+    }
 }

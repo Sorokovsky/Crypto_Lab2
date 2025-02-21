@@ -11,7 +11,7 @@ public static class Choosing
         bool retry = true
     )
     {
-        Console.WriteLine($"Виберіть {listName}: ");
+        Console.WriteLine($"Виберіть зі \"{listName}\": ");
         list.ForEach(x => Console.WriteLine($"{nameGetter(x)}"));
         Console.Write(">> ");
         var result = resultGetter(Console.ReadLine() ?? string.Empty);

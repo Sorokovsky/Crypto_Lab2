@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Lab2.Commands.Chooser;
 using Lab2.Commands.Commands;
 using Lab2.Commands.Interfaces;
 
@@ -62,14 +63,14 @@ public class CommandContext : ICommandContext
 
     private ICommand ChooseCommand()
     {
-        Console.WriteLine($"{Title}.");
-        Console.WriteLine("Виберіть операцію.");
-        _commands.ForEach(Console.WriteLine);
-        Console.Write(">> ");
-        var number = int.Parse(Console.ReadLine() ?? string.Empty);
-        var command = _commands.FirstOrDefault(x => x.Number == number);
-        if (command is null) throw new Exception("Відповідь не розпізнано.");
-        return command;
+        return Choosing.FromList(
+            _commands,
+            x => x.ToString() ?? string.Empty,
+            int.Parse,
+            (command, i) => command.Number == i,
+            Title,
+            false
+        );
     }
 
     private static void WaitForContinue()

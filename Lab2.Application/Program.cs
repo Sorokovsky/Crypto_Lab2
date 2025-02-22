@@ -14,7 +14,8 @@ public static class Program
             new WriteFileCommand(),
             new ReadFileCommand(),
             new EncryptCommand(),
-            new DecryptCommand()
+            new DecryptCommand(),
+            new TryHackCommand()
         );
         context.Invoke();
     }

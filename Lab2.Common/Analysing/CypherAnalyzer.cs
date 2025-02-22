@@ -74,7 +74,8 @@ public static class CypherAnalyzer
         return new StatisticsBox(result);
     }
 
-    public static string TryHack(string text, IEncryptor encryptor, Func<IEncryptor, string, string> choosingKey)
+    public static string TryHack(string text, IEncryptor encryptor, Func<string> keyGetter,
+        Func<bool> notContinueGetter)
     {
         var keyLength = GetKeyLength(text);
         Console.WriteLine($"Довжина ключа: {keyLength}.");
@@ -82,8 +83,18 @@ public static class CypherAnalyzer
         Console.WriteLine("По рядкам.");
         Console.WriteLine(split);
         var stats = GetStatistics(split, keyLength);
-        Console.WriteLine("Статистика: ");
-        Console.WriteLine(stats);
-        return choosingKey(encryptor, text);
+        var finished = false;
+        var output = string.Empty;
+        while (finished is false)
+        {
+            Console.WriteLine("Статистика: ");
+            Console.WriteLine(stats);
+            var key = keyGetter();
+            output = encryptor.Decrypt(text, key);
+            Console.WriteLine($"Розшифрований текст: \"{output}\"");
+            finished = notContinueGetter();
+        }
+
+        return output;
     }
 }

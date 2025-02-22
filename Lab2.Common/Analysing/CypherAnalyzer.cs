@@ -7,6 +7,33 @@ namespace Lab2.Common.Analysing;
 
 public static class CypherAnalyzer
 {
+    public static string TryHack(string text, IEncryptor encryptor, Func<string> keyGetter,
+        Func<bool> notContinueGetter)
+    {
+        var keyLength = GetKeyLength(text);
+        var concurrencyIndex = LettersStatistics.ConcurrencyIndex(text);
+        Console.WriteLine($"Індекс збігу: {concurrencyIndex}");
+        Console.WriteLine($"Довжина ключа: {keyLength}.");
+        Console.WriteLine($"Довжина ключа за Фрідменом: {FreedmanKeyLength(text, encryptor.Alphabet.Length)}.");
+        var split = SplitByColumns(text, keyLength);
+        Console.WriteLine("По рядкам.");
+        Console.WriteLine(split);
+        var stats = GetStatistics(split, keyLength);
+        var finished = false;
+        var output = string.Empty;
+        while (finished is false)
+        {
+            Console.WriteLine("Статистика: ");
+            Console.WriteLine(stats);
+            var key = keyGetter();
+            output = encryptor.Decrypt(text, key);
+            Console.WriteLine($"Розшифрований текст: \"{output}\"");
+            finished = notContinueGetter();
+        }
+
+        return output;
+    }
+
     private static int GetKeyLength(string text)
     {
         text = PrepareText(text);
@@ -14,6 +41,20 @@ public static class CypherAnalyzer
         Console.WriteLine($"Найпопулярніша триграма: {popularThreeGram}.");
         var lengthBetweenFirstLetters = ThreeGrams.GetDestinations(text, popularThreeGram);
         return Number.Gcd(lengthBetweenFirstLetters);
+    }
+
+    private static double FreedmanKeyLength(string text, int alphabetCount)
+    {
+        var reversedCount = 1 / (double)alphabetCount;
+        var doubleFrequencies = LettersStatistics.CollectFrequencies(text)
+            .Sum(x => System.Math.Pow(x.Value, 2));
+        var concurrencyIndex = LettersStatistics.ConcurrencyIndex(text);
+        var upper = doubleFrequencies - reversedCount;
+        var downerLeft = concurrencyIndex - reversedCount;
+        var downerRightTop = doubleFrequencies - concurrencyIndex;
+        var downerRight = downerRightTop / text.Length;
+        var downer = downerLeft + downerRight;
+        return upper / downer;
     }
 
     private static TextTable SplitByColumns(string text, int keyLength)
@@ -41,20 +82,16 @@ public static class CypherAnalyzer
 
     private static string PrepareText(string text)
     {
-        var result = string.Empty;
-        foreach (var symbol in text)
-            if (char.IsLetter(symbol))
-                result += char.ToUpper(symbol);
-
-        return result;
+        return text
+            .Where(char.IsLetter)
+            .Aggregate(string.Empty, (current, symbol) => current + char.ToUpper(symbol));
     }
 
     private static Dictionary<char, int> CollectCounting(List<char> letters)
     {
         var result = new Dictionary<char, int>();
-        foreach (var letter in letters)
-            if (!result.TryAdd(letter, 1))
-                result[letter]++;
+        foreach (var letter in letters.Where(letter => !result.TryAdd(letter, 1)))
+            result[letter]++;
 
         return result;
     }
@@ -72,29 +109,5 @@ public static class CypherAnalyzer
         }
 
         return new StatisticsBox(result);
-    }
-
-    public static string TryHack(string text, IEncryptor encryptor, Func<string> keyGetter,
-        Func<bool> notContinueGetter)
-    {
-        var keyLength = GetKeyLength(text);
-        Console.WriteLine($"Довжина ключа: {keyLength}.");
-        var split = SplitByColumns(text, keyLength);
-        Console.WriteLine("По рядкам.");
-        Console.WriteLine(split);
-        var stats = GetStatistics(split, keyLength);
-        var finished = false;
-        var output = string.Empty;
-        while (finished is false)
-        {
-            Console.WriteLine("Статистика: ");
-            Console.WriteLine(stats);
-            var key = keyGetter();
-            output = encryptor.Decrypt(text, key);
-            Console.WriteLine($"Розшифрований текст: \"{output}\"");
-            finished = notContinueGetter();
-        }
-
-        return output;
     }
 }

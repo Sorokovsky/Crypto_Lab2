@@ -5,14 +5,15 @@ namespace Lab2.Visionary;
 
 public class VisionaryEncryptor : IEncryptor
 {
-    private readonly string _alphabet;
     private readonly VisionaryTable _table;
 
     public VisionaryEncryptor(string alphabet = Alphabets.En)
     {
-        _alphabet = alphabet;
+        Alphabet = alphabet;
         _table = VisionaryTable.Generate(alphabet);
     }
+
+    public string Alphabet { get; }
 
     public string Encrypt(string text, string key)
     {
@@ -40,7 +41,7 @@ public class VisionaryEncryptor : IEncryptor
         for (int i = 0, j = 0; i < text.Length; i++, j++)
         {
             var textLetter = text[i];
-            var isLetter = _alphabet.IndexOf(char.ToUpper(textLetter)) != -1;
+            var isLetter = Alphabet.IndexOf(char.ToUpper(textLetter)) != -1;
             var keyLetter = key[j];
             if (isLetter)
             {
@@ -67,7 +68,7 @@ public class VisionaryEncryptor : IEncryptor
     private char GetDecryptedLetter(char text, char key)
     {
         var letter = ' ';
-        foreach (var t in _alphabet)
+        foreach (var t in Alphabet)
         {
             letter = t;
             var output = _table.GetByKey(new VisionaryKey(key, letter));

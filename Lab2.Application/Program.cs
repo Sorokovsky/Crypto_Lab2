@@ -12,7 +12,9 @@ public static class Program
         ICommandContext context = new CommandContext("Головне меню", Encoding.UTF8);
         context.Append(
             new WriteFileCommand(),
-            new ReadFileCommand()
+            new ReadFileCommand(),
+            new EncryptCommand(),
+            new DecryptCommand()
         );
         context.Invoke();
     }

@@ -11,6 +11,14 @@ public static class Choosing
         bool retry = true
     )
     {
+        switch (list.Count)
+        {
+            case 0:
+                throw new ArgumentException("Список для обрання порожній.");
+            case 1:
+                return list.First();
+        }
+
         Console.WriteLine($"Виберіть зі \"{listName}\": ");
         list.ForEach(x => Console.WriteLine($"{nameGetter(x)}"));
         Console.Write(">> ");
@@ -38,15 +46,15 @@ public static class Choosing
 
     public static bool Binary(string question)
     {
-        var variants = "(0-ні, 1-так)";
+        const string variants = "(0-ні, 1-так)";
         Console.Write($"{question} {variants}: ");
-        var choise = int.Parse(Console.ReadLine() ?? string.Empty);
-        while (choise != 0 && choise != 1)
+        var choose = int.Parse(Console.ReadLine() ?? string.Empty);
+        while (choose != 0 && choose != 1)
         {
             Console.Write($"Відповідь не розпізнано, спробуйте ще {variants}: ");
-            choise = int.Parse(Console.ReadLine() ?? string.Empty);
+            choose = int.Parse(Console.ReadLine() ?? string.Empty);
         }
 
-        return choise == 1;
+        return choose == 1;
     }
 }

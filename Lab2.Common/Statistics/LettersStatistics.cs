@@ -21,8 +21,7 @@ public static class LettersStatistics
     {
         Dictionary<char, int> result = new();
         foreach (var symbol in text
-                     .Where(char.IsLetter)
-                     .Where(symbol => result.TryAdd(char.ToUpper(symbol), 1) is false)
+                     .Where(symbol => char.IsLetter(symbol) && !result.TryAdd(char.ToUpper(symbol), 1))
                 )
             result[char.ToUpper(symbol)]++;
 

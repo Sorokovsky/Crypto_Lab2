@@ -34,6 +34,20 @@ public partial class Matrix<T> where T : INumber<T>
         return false;
     }
 
+    public static Matrix<T> FromOnce(T item, int rows, int columns)
+    {
+        var matrix = new List<T[]>();
+        for (var i = 0; i < rows; i++)
+        {
+            var temp = new List<T>();
+            for (var j = 0; j < columns; j++) temp.Add(item);
+
+            matrix.Add(temp.ToArray());
+        }
+
+        return new Matrix<T>(matrix.ToArray());
+    }
+
     public override string ToString()
     {
         var result = string.Empty;

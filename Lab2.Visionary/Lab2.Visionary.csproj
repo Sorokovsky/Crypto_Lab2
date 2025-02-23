@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Tools\"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\Lab2.Common\Lab2.Common.csproj"/>
     </ItemGroup>
 

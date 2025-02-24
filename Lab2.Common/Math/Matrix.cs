@@ -16,66 +16,60 @@ public partial class Matrix<T> where T : INumber<T>
     public int Columns { get; }
     public int Rows { get; }
 
+    public T Determinant => Determinate();
+
     public T ElementAt(int row, int column)
     {
-        if (row >= Rows || row < 0) throw new ArgumentException($"Індекс рядка має бути 0-{Rows}");
-        if (column >= Columns || column < 0) throw new ArgumentException($"Індекс колонки має бути 0-{Columns}");
+        if (row >= Rows || row < 0) throw new ArgumentException($"Індекс рядка має бути 0-{Rows - 1}.");
+        if (column >= Columns || column < 0) throw new ArgumentException($"Індекс колонки має бути 0-{Columns - 1}.");
         return _matrix[row][column];
     }
 
-    public override bool Equals(object? obj)
+    private T Determinate()
     {
-        if (obj is Matrix<T> matrix)
+        if (Rows != Columns) throw new Exception("Матриця має бути квадратна.");
+        var det = T.One;
+        var swaps = 0;
+        var temp = Clone();
+        var tolerance = T.Abs((T)Convert.ChangeType(1e-9, typeof(T)));
+
+        for (var column = 0; column < Columns; column++)
         {
-            if (Rows != matrix.Rows || Columns != matrix.Columns) return false;
-            return ToString() == matrix.ToString();
-        }
+            var pivotRow = column;
+            var maxVal = T.Abs(temp.ElementAt(pivotRow, column));
 
-        return false;
-    }
-
-    public static Matrix<T> FromOnce(T item, int rows, int columns)
-    {
-        var matrix = new List<T[]>();
-        for (var i = 0; i < rows; i++)
-        {
-            var temp = new List<T>();
-            for (var j = 0; j < columns; j++) temp.Add(item);
-
-            matrix.Add(temp.ToArray());
-        }
-
-        return new Matrix<T>(matrix.ToArray());
-    }
-
-    public override string ToString()
-    {
-        var result = string.Empty;
-        for (var i = 0; i < Rows; i++)
-        {
-            for (var j = 0; j < Columns; j++)
+            for (var row = column + 1; row < Rows; row++)
             {
-                var end = j == Columns - 1 ? string.Empty : " ";
-                result += ElementAt(i, j) + end;
+                var val = T.Abs(temp.ElementAt(row, column));
+                if (val > maxVal)
+                {
+                    pivotRow = row;
+                    maxVal = val;
+                }
             }
 
-            if (i != Rows - 1) result += "\n";
+            if (maxVal < tolerance) return T.Zero;
+
+            if (pivotRow != column)
+            {
+                temp.SwapRows(column, pivotRow);
+                swaps++;
+            }
+
+            for (var row = column + 1; row < Rows; row++)
+            {
+                var factor = temp.ElementAt(row, column) / temp.ElementAt(column, column);
+                for (var j = column; j < Columns; j++)
+                {
+                    var old = temp.ElementAt(row, j);
+                    var value = old - factor * temp.ElementAt(column, j);
+                    temp.Set(row, j, value);
+                }
+            }
+
+            det *= temp.ElementAt(column, column);
         }
 
-        return result;
-    }
-
-    private int CalculateColumnsCount()
-    {
-        var cols = _matrix.First().Length;
-        if (_matrix.Any(row => row.Length != cols))
-            throw new ArgumentException("Кількість колонок має бути однаковим.");
-
-        return cols;
-    }
-
-    private int CalculateRowsCount()
-    {
-        return _matrix.Length;
+        return swaps % 2 == 0 ? det : -det;
     }
 }

@@ -20,7 +20,7 @@ public class MatrixDeterminantTests
     }
 
     [TestMethod]
-    public void Test_Determinant_Of_Identity_Matrix()
+    public void TestDeterminantOfIdentityMatrix()
     {
         var matrix = new Matrix<double>([
             [1, 0, 0],
@@ -34,7 +34,7 @@ public class MatrixDeterminantTests
     }
 
     [TestMethod]
-    public void Test_Determinant_Of_Singular_Matrix()
+    public void TestDeterminantOfSingularMatrix()
     {
         var matrix = new Matrix<double>([
             [2, 4, 2],
@@ -48,7 +48,7 @@ public class MatrixDeterminantTests
     }
 
     [TestMethod]
-    public void Test_Determinant_Of_2x2_Matrix()
+    public void TestDeterminantOf2X2Matrix()
     {
         var matrix = new Matrix<double>([
             [4, 3],

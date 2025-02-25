@@ -4,14 +4,14 @@ public partial class Matrix<T>
 {
     public override bool Equals(object? obj)
     {
-        if (obj is not Matrix<T> matrix) return false;
-        if (Rows != matrix.Rows || Columns != matrix.Columns) return false;
-        return ToString() == matrix.ToString();
+        if (obj is Matrix<T> matrix) return Equals(matrix);
+        return false;
     }
 
-    protected bool Equals(Matrix<T> other)
+    private bool Equals(Matrix<T> matrix)
     {
-        return _matrix.Equals(other._matrix) && Columns == other.Columns && Rows == other.Rows;
+        if (Rows != matrix.Rows || Columns != matrix.Columns) return false;
+        return ToString() == matrix.ToString();
     }
 
     public override int GetHashCode()

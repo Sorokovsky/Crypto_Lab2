@@ -4,13 +4,19 @@ public partial class Matrix<T>
 {
     public override bool Equals(object? obj)
     {
-        if (obj is Matrix<T> matrix)
-        {
-            if (Rows != matrix.Rows || Columns != matrix.Columns) return false;
-            return ToString() == matrix.ToString();
-        }
+        if (obj is not Matrix<T> matrix) return false;
+        if (Rows != matrix.Rows || Columns != matrix.Columns) return false;
+        return ToString() == matrix.ToString();
+    }
 
-        return false;
+    protected bool Equals(Matrix<T> other)
+    {
+        return _matrix.Equals(other._matrix) && Columns == other.Columns && Rows == other.Rows;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_matrix, Columns, Rows);
     }
 
     public void Set(int row, int column, T value)
@@ -35,13 +41,20 @@ public partial class Matrix<T>
         return new Matrix<T>(matrix.ToArray());
     }
 
-    public Matrix<T> Transponate()
+    public Matrix<T> Transpose()
     {
         if (Rows != Columns) throw new Exception("Матриця має бути квадаратна.");
         if (Determinant == T.Zero) throw new Exception("Визначник не має бути нулевим.");
-        var result = Clone();
+        var result = new List<T[]>();
+        for (var row = 0; row < Rows; row++)
+        {
+            var temp = new List<T>();
+            for (var column = 0; column < Columns; column++) temp.Add(ElementAt(column, row));
 
-        return result;
+            result.Add(temp.ToArray());
+        }
+
+        return new Matrix<T>(result.ToArray());
     }
 
     public T AlgebraicAddition(int row, int column)

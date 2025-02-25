@@ -107,4 +107,13 @@ public class MatrixTests
         var result = matrix.AlgebraicAddition(row, column);
         Assert.AreEqual(expected, result);
     }
+
+    [TestMethod]
+    public void ShouldSuccessTranspose()
+    {
+        var matrix = new Matrix<double>([[2, 4, 1], [0, 2, 1], [2, 1, 1]]);
+        var expected = new Matrix<double>([[2, 0, 2], [4, 2, 1], [1, 1, 1]]);
+        var result = matrix.Transpose();
+        Assert.AreEqual(expected.ToString(), result.ToString());
+    }
 }

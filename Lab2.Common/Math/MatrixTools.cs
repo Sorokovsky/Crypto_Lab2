@@ -35,6 +35,29 @@ public partial class Matrix<T>
         return new Matrix<T>(matrix.ToArray());
     }
 
+    public Matrix<T> Transponate()
+    {
+        if (Rows != Columns) throw new Exception("Матриця має бути квадаратна.");
+        if (Determinant == T.Zero) throw new Exception("Визначник не має бути нулевим.");
+        var result = Clone();
+
+        return result;
+    }
+
+    public T AlgebraicAddition(int row, int column)
+    {
+        if (row < 0 || row >= Rows || column < 0 || column >= Columns)
+            throw new ArgumentException("Індекси за межами.");
+
+        var matrix = DeleteSection(row, column);
+        var left = -T.One;
+        var power = row + 1 + column + 1;
+        for (var i = 0; i <= power; i++) left *= -T.One;
+
+        var right = matrix.Determinant;
+        return left * right;
+    }
+
     public override string ToString()
     {
         var result = string.Empty;
@@ -77,6 +100,28 @@ public partial class Matrix<T>
             Set(row1, i, ElementAt(row2, i));
             Set(row2, i, temp);
         }
+    }
+
+    private Matrix<T> DeleteSection(int row, int column)
+    {
+        if (row < 0 || row >= Rows || column < 0 || column >= Columns)
+            throw new ArgumentException("Індекси за межами.");
+
+        var matrix = new List<T[]>();
+        for (var i = 0; i < Rows; i++)
+        {
+            if (i == row) continue;
+            var temp = new List<T>();
+            for (var j = 0; j < Columns; j++)
+            {
+                if (j == column) continue;
+                temp.Add(ElementAt(i, j));
+            }
+
+            matrix.Add(temp.ToArray());
+        }
+
+        return new Matrix<T>(matrix.ToArray());
     }
 
     private Matrix<T> Clone()

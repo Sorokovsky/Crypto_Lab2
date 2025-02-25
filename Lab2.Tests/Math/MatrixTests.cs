@@ -96,4 +96,15 @@ public class MatrixTests
         var result = second * first;
         Assert.AreEqual(expected.ToString(), result.ToString());
     }
+
+    [TestMethod]
+    public void ShouldCorrectAlgebraicAddition()
+    {
+        var matrix = new Matrix<double>([[2, 4, 1], [0, 2, 1], [2, 1, 1]]);
+        const int row = 0;
+        const int column = 1;
+        const int expected = 2;
+        var result = matrix.AlgebraicAddition(row, column);
+        Assert.AreEqual(expected, result);
+    }
 }

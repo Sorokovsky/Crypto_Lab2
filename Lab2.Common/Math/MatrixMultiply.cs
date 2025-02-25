@@ -29,4 +29,22 @@ public partial class Matrix<T>
 
         return new Matrix<T>(result.ToArray());
     }
+
+    public static Matrix<T> operator *(Matrix<T> first, T second)
+    {
+        var result = first.Clone();
+        for (var i = 0; i < first.Rows; i++)
+        for (var j = 0; j < first.Columns; j++)
+        {
+            var newValue = result.ElementAt(i, j) * second;
+            result.Set(i, j, newValue);
+        }
+
+        return result;
+    }
+
+    public static Matrix<T> operator *(T first, Matrix<T> second)
+    {
+        return second * first;
+    }
 }

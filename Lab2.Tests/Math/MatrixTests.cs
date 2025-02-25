@@ -76,4 +76,24 @@ public class MatrixTests
         var result = first * second;
         Assert.AreEqual(expected.ToString(), result.ToString());
     }
+
+    [TestMethod]
+    public void ShouldCorrectMultiplyMatrixAndNumber()
+    {
+        var first = new Matrix<double>([[1, 2], [3, 4]]);
+        var expected = new Matrix<double>([[2, 4], [6, 8]]);
+        const int second = 2;
+        var result = first * second;
+        Assert.AreEqual(expected.ToString(), result.ToString());
+    }
+
+    [TestMethod]
+    public void ShouldCorrectMultiplyNumberAndMatrix()
+    {
+        var first = new Matrix<double>([[1, 2], [3, 4]]);
+        var expected = new Matrix<double>([[2, 4], [6, 8]]);
+        const int second = 2;
+        var result = second * first;
+        Assert.AreEqual(expected.ToString(), result.ToString());
+    }
 }

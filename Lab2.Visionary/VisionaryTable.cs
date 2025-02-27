@@ -39,14 +39,8 @@ public class VisionaryTable
 
     public override string ToString()
     {
-        var result = string.Empty;
-        foreach (var rows in _table)
-        {
-            result = rows.Aggregate(result, (current, cell) => current + cell);
-
-            result += "\n";
-        }
-
-        return result;
+        return _table.Aggregate(string.Empty, (current1, rows) => rows
+            .Aggregate(current1, (current, cell) => current + cell) + "\n"
+        );
     }
 }

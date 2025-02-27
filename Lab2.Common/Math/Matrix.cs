@@ -31,15 +31,15 @@ public partial class Matrix<T> where T : INumber<T>
         var temp = new List<T>();
         var determinant = Determinant;
         if (determinant.Equals(T.Zero)) throw new Exception("Визначник не може бути нулевим.");
-        var reversedDeterminant = (T)(dynamic)(1 / (double)(dynamic)determinant);
+        var reversedDeterminant = T.One / determinant;
         ForEach((row, column, _) =>
         {
-            temp.Add(AlgebraicAddition(row, column));
+            temp.Add(AlgebraicAddition(column, row));
             if (column != Columns - 1) return;
             matrixTemp.Add(temp.ToArray());
             temp = [];
         });
-        var matrix = new Matrix<T>(matrixTemp.ToArray()).Transpose();
+        var matrix = new Matrix<T>(matrixTemp.ToArray());
         return reversedDeterminant * matrix;
     }
 
@@ -49,7 +49,7 @@ public partial class Matrix<T> where T : INumber<T>
         var det = T.One;
         var swaps = 0;
         var temp = Clone();
-        var tolerance = T.Abs((T)Convert.ChangeType(1e-9, typeof(T)));
+        var tolerance = T.One / (T)Convert.ChangeType(1e9, typeof(T));
 
         for (var column = 0; column < Columns; column++)
         {

@@ -120,9 +120,13 @@ public class MatrixTests
     [TestMethod]
     public void ShouldCorrectReverse()
     {
-        var input = new Matrix<double>([[4, 7], [2, 6]]);
-        var expected = new Matrix<double>([[0.45, -0.35], [-0.2, 0.4]]);
-        var result = input.Reverse();
+        var matrix = new Matrix<double>([[2, 4, 1], [0, 2, 1], [2, 1, 1]]);
+        var expected = new Matrix<double>([
+            [1.0 / 6, -1.0 / 2, 1.0 / 3],
+            [1.0 / 3, 0.0, 0.0],
+            [-2.0 / 3, 1.0, 2.0 / 3]
+        ]);
+        var result = matrix.Reverse();
         Assert.AreEqual(expected.ToString(), result.ToString());
     }
 }

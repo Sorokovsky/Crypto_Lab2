@@ -34,7 +34,7 @@ public partial class Matrix<T>
         _matrix[row][column] = value;
     }
 
-    private static Matrix<T> FromOnce(T item, int rows, int columns)
+    public static Matrix<T> FromOnce(T item, int rows, int columns)
     {
         var matrix = new List<T[]>();
         for (var i = 0; i < rows; i++)
@@ -71,9 +71,7 @@ public partial class Matrix<T>
             throw new ArgumentException("Індекси за межами.");
 
         var matrix = DeleteSection(row, column);
-        var left = -T.One;
-        var power = row + 1 + column + 1;
-        for (var i = 0; i <= power; i++) left *= -T.One;
+        var left = (row + column) % 2 == 0 ? T.One : -T.One;
 
         var right = matrix.Determinant;
         return left * right;
@@ -93,7 +91,7 @@ public partial class Matrix<T>
 
     private int CalculateColumnsCount()
     {
-        var cols = _matrix.First().Length;
+        var cols = _matrix.FirstOrDefault()?.Length ?? 0;
         if (_matrix.Any(row => row.Length != cols))
             throw new ArgumentException("Кількість колонок має бути однаковим.");
 

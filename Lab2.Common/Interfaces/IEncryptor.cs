@@ -2,7 +2,7 @@
 
 public interface IEncryptor
 {
-    public string Alphabet { get; }
+    public (string Letters, double Frequencies) Alphabet { get; }
 
     public string Encrypt(string text, string key);
 

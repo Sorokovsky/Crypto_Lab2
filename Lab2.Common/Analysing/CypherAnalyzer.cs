@@ -14,7 +14,7 @@ public static class CypherAnalyzer
         var concurrencyIndex = LettersStatistics.ConcurrencyIndex(text);
         Console.WriteLine($"Індекс збігу: {concurrencyIndex}");
         Console.WriteLine($"Довжина ключа: {keyLength}.");
-        Console.WriteLine($"Довжина ключа за Фрідменом: {FreedmanKeyLength(text, encryptor.Alphabet.Length)}.");
+        Console.WriteLine($"Довжина ключа за Фрідменом: {FreedmanKeyLength(text, encryptor.Alphabet)}.");
         var split = SplitByColumns(text, keyLength);
         Console.WriteLine("По рядкам.");
         Console.WriteLine(split);
@@ -43,9 +43,9 @@ public static class CypherAnalyzer
         return Number.Gcd(lengthBetweenFirstLetters);
     }
 
-    private static double FreedmanKeyLength(string text, int alphabetCount)
+    private static double FreedmanKeyLength(string text, (string Letters, double Frequencies) alphabet)
     {
-        var reversedCount = 1 / (double)alphabetCount;
+        var reversedCount = 1 / (double)alphabet.Letters.Length;
         var doubleFrequencies = LettersStatistics.CollectFrequencies(text)
             .Sum(x => System.Math.Pow(x.Value, 2));
         Console.WriteLine($"Середня частота появи літер: {doubleFrequencies}.");

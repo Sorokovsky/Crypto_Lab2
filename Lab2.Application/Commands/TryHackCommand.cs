@@ -15,7 +15,7 @@ public class TryHackCommand : BasicCommand
     {
         var text = Choosing.Text("текст");
         var alphabet = CommandsHelper.ChooseAlphabets();
-        CypherAnalyzer.TryHack(text, new VisionaryEncryptor(alphabet.Letters), EnterKey, EnterIsNotContinue);
+        CypherAnalyzer.TryHack(text, new VisionaryEncryptor(alphabet), EnterKey, EnterIsNotContinue);
     }
 
     private static string EnterKey()

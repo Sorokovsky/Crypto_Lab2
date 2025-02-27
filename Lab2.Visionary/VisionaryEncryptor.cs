@@ -6,13 +6,13 @@ public class VisionaryEncryptor : IEncryptor
 {
     private readonly VisionaryTable _table;
 
-    public VisionaryEncryptor(string alphabet)
+    public VisionaryEncryptor((string Letters, double Frequencies) alphabet)
     {
         Alphabet = alphabet;
-        _table = VisionaryTable.Generate(alphabet);
+        _table = VisionaryTable.Generate(alphabet.Letters);
     }
 
-    public string Alphabet { get; }
+    public (string Letters, double Frequencies) Alphabet { get; }
 
     public string Encrypt(string text, string key)
     {
@@ -40,7 +40,7 @@ public class VisionaryEncryptor : IEncryptor
         for (int i = 0, j = 0; i < text.Length; i++, j++)
         {
             var textLetter = text[i];
-            var isLetter = Alphabet.IndexOf(char.ToUpper(textLetter)) != -1;
+            var isLetter = Alphabet.Letters.Contains(char.ToUpper(textLetter));
             var keyLetter = key[j];
             if (isLetter)
             {
@@ -67,7 +67,7 @@ public class VisionaryEncryptor : IEncryptor
     private char GetDecryptedLetter(char text, char key)
     {
         var letter = ' ';
-        foreach (var t in Alphabet)
+        foreach (var t in Alphabet.Letters)
         {
             letter = t;
             var output = _table.GetByKey(new VisionaryKey(key, letter));

@@ -34,7 +34,7 @@ public class TableTests
     [TestMethod]
     public void ShouldCorrectEncrypt()
     {
-        var encryptor = new VisionaryEncryptor(Alphabets.En.Letters);
+        var encryptor = new VisionaryEncryptor(Alphabets.En);
         const string key = "ARTHUR";
         var result = encryptor.Encrypt(_decrypted, key);
         Assert.AreEqual(_encrypted, result);
@@ -43,7 +43,7 @@ public class TableTests
     [TestMethod]
     public void ShouldCorrectDecrypt()
     {
-        var encryptor = new VisionaryEncryptor(Alphabets.En.Letters);
+        var encryptor = new VisionaryEncryptor(Alphabets.En);
         const string key = "ARTHUR";
         var result = encryptor.Decrypt(_encrypted, key);
         Assert.AreEqual(_decrypted, result);

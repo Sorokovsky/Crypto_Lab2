@@ -4,27 +4,29 @@ public static class LettersStatistics
 {
     public static double ConcurrencyIndex(string text)
     {
-        var stats = CollectCount(text);
-        double upper = stats.Select(x => x.Value * (x.Value - 1)).Sum();
-        double downer = text.Length * (text.Length - 1);
-        return upper / downer;
+        var letters = text
+            .Where(char.IsLetter)
+            .Select(char.ToUpper)
+            .ToArray();
+        var n = letters.Length;
+        if (n < 2) return 0;
+        return CollectFrequencies(text).Values.Sum(f => f * (f - 1)) / (n * (n - 1));
     }
 
     public static IReadOnlyDictionary<char, double> CollectFrequencies(string text)
     {
-        var stats = CollectCount(text);
-        return stats
-            .ToDictionary(x => x.Key, x => (double)x.Value / text.Length);
+        return CollectCount(text)
+            .ToDictionary(x => x.Key, x => x.Value / (double)text.Length);
     }
 
     private static IReadOnlyDictionary<char, int> CollectCount(string text)
     {
-        Dictionary<char, int> result = new();
-        foreach (var symbol in text
-                     .Where(symbol => char.IsLetter(symbol) && !result.TryAdd(char.ToUpper(symbol), 1))
-                )
-            result[char.ToUpper(symbol)]++;
-
-        return result;
+        var letters = text
+            .Where(char.IsLetter)
+            .Select(char.ToUpper)
+            .ToArray();
+        return letters
+            .GroupBy(c => c)
+            .ToDictionary(g => g.Key, g => g.Count());
     }
 }

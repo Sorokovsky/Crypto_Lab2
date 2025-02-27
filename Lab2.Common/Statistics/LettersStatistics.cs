@@ -7,16 +7,18 @@ public static class LettersStatistics
         var letters = text
             .Where(char.IsLetter)
             .Select(char.ToUpper)
-            .ToArray();
-        var n = letters.Length;
+            .ToArray().ToString();
+        var n = letters
+            .Length;
         if (n < 2) return 0;
-        return CollectFrequencies(text).Values.Sum(f => f * (f - 1)) / (n * (n - 1));
+        return CollectCount(letters).Values.Sum(f => f * (f - 1)) / (double)(n * (n - 1));
     }
 
     public static IReadOnlyDictionary<char, double> CollectFrequencies(string text)
     {
+        var letters = text.Where(char.IsLetter).ToArray();
         return CollectCount(text)
-            .ToDictionary(x => x.Key, x => x.Value / (double)text.Length);
+            .ToDictionary(x => x.Key, x => x.Value / (double)letters.Length);
     }
 
     private static IReadOnlyDictionary<char, int> CollectCount(string text)

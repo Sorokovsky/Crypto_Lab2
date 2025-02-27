@@ -5,7 +5,7 @@ namespace Lab2.Application.Helpers;
 
 public static class CommandsHelper
 {
-    public static string ChooseAlphabets()
+    public static (string Letters, double Frequencies) ChooseAlphabets()
     {
         return Choosing.FromList(
             Alphabets.All.ToList(),

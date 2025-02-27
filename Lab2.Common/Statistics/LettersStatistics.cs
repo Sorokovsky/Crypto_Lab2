@@ -2,26 +2,26 @@
 
 public static class LettersStatistics
 {
-    public static double ConcurrencyIndex(string text)
+    public static double ConcurrencyIndex(IEnumerable<char> text)
     {
         var letters = text
             .Where(char.IsLetter)
             .Select(char.ToUpper)
-            .ToArray().ToString();
+            .ToArray();
         var n = letters!
             .Length;
         if (n < 2) return 0;
         return CollectCount(letters).Values.Sum(f => f * (f - 1)) / (double)(n * (n - 1));
     }
 
-    public static IReadOnlyDictionary<char, double> CollectFrequencies(string text)
+    public static IReadOnlyDictionary<char, double> CollectFrequencies(IEnumerable<char> text)
     {
         var letters = text.Where(char.IsLetter).ToArray();
-        return CollectCount(text)
+        return CollectCount(letters)
             .ToDictionary(x => x.Key, x => x.Value / (double)letters.Length);
     }
 
-    private static IReadOnlyDictionary<char, int> CollectCount(string text)
+    private static IReadOnlyDictionary<char, int> CollectCount(IEnumerable<char> text)
     {
         var letters = text
             .Where(char.IsLetter)

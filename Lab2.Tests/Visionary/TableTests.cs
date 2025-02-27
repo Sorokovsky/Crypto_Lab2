@@ -1,4 +1,5 @@
-﻿using Lab2.Visionary;
+﻿using Lab2.Common.Tools;
+using Lab2.Visionary;
 
 namespace Lab2.Tests.Visionary;
 
@@ -16,14 +17,14 @@ public class TableTests
     {
         var output =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ\nBCDEFGHIJKLMNOPQRSTUVWXYZA\nCDEFGHIJKLMNOPQRSTUVWXYZAB\nDEFGHIJKLMNOPQRSTUVWXYZABC\nEFGHIJKLMNOPQRSTUVWXYZABCD\nFGHIJKLMNOPQRSTUVWXYZABCDE\nGHIJKLMNOPQRSTUVWXYZABCDEF\nHIJKLMNOPQRSTUVWXYZABCDEFG\nIJKLMNOPQRSTUVWXYZABCDEFGH\nJKLMNOPQRSTUVWXYZABCDEFGHI\nKLMNOPQRSTUVWXYZABCDEFGHIJ\nLMNOPQRSTUVWXYZABCDEFGHIJK\nMNOPQRSTUVWXYZABCDEFGHIJKL\nNOPQRSTUVWXYZABCDEFGHIJKLM\nOPQRSTUVWXYZABCDEFGHIJKLMN\nPQRSTUVWXYZABCDEFGHIJKLMNO\nQRSTUVWXYZABCDEFGHIJKLMNOP\nRSTUVWXYZABCDEFGHIJKLMNOPQ\nSTUVWXYZABCDEFGHIJKLMNOPQR\nTUVWXYZABCDEFGHIJKLMNOPQRS\nUVWXYZABCDEFGHIJKLMNOPQRST\nVWXYZABCDEFGHIJKLMNOPQRSTU\nWXYZABCDEFGHIJKLMNOPQRSTUV\nXYZABCDEFGHIJKLMNOPQRSTUVW\nYZABCDEFGHIJKLMNOPQRSTUVWX\nZABCDEFGHIJKLMNOPQRSTUVWXY\n";
-        var result = VisionaryTable.Generate().ToString();
+        var result = VisionaryTable.Generate(Alphabets.En.Letters).ToString();
         Assert.AreEqual(output, result);
     }
 
     [TestMethod]
     public void ShouldCorrectEnGetting()
     {
-        var table = VisionaryTable.Generate();
+        var table = VisionaryTable.Generate(Alphabets.En.Letters);
         const char expected = 'N';
         VisionaryKey key = new('E', 'J');
         var result = table.GetByKey(key);
@@ -33,7 +34,7 @@ public class TableTests
     [TestMethod]
     public void ShouldCorrectEncrypt()
     {
-        var encryptor = new VisionaryEncryptor();
+        var encryptor = new VisionaryEncryptor(Alphabets.En.Letters);
         const string key = "ARTHUR";
         var result = encryptor.Encrypt(_decrypted, key);
         Assert.AreEqual(_encrypted, result);
@@ -42,7 +43,7 @@ public class TableTests
     [TestMethod]
     public void ShouldCorrectDecrypt()
     {
-        var encryptor = new VisionaryEncryptor();
+        var encryptor = new VisionaryEncryptor(Alphabets.En.Letters);
         const string key = "ARTHUR";
         var result = encryptor.Decrypt(_encrypted, key);
         Assert.AreEqual(_decrypted, result);

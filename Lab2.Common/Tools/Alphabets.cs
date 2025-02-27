@@ -2,9 +2,9 @@
 
 public static class Alphabets
 {
-    public const string En = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public static readonly (string Letters, double Frequencies) En = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 0.065);
 
-    public static Dictionary<string, string> All = new()
+    public static Dictionary<string, (string, double)> All = new()
     {
         { "En", En }
     };

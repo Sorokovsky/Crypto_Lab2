@@ -1,6 +1,4 @@
-﻿using Lab2.Common.Tools;
-
-namespace Lab2.Visionary;
+﻿namespace Lab2.Visionary;
 
 public class VisionaryTable
 {
@@ -21,7 +19,7 @@ public class VisionaryTable
         return row.ElementAt(columnIndex);
     }
 
-    public static VisionaryTable Generate(string alphabet = Alphabets.En)
+    public static VisionaryTable Generate(string alphabet)
     {
         var result = new List<List<char>>();
         for (var i = 0; i < alphabet.Length; i++)

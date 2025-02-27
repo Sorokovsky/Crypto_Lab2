@@ -13,7 +13,7 @@ public class EncryptCommand : BasicCommand
 
     public override void Invoke(IExitable? exitable)
     {
-        IEncryptor encryptor = new VisionaryEncryptor(CommandsHelper.ChooseAlphabets());
+        IEncryptor encryptor = new VisionaryEncryptor(CommandsHelper.ChooseAlphabets().Letters);
         var key = Choosing.Text("ключ");
         var text = Choosing.Text("текст");
         var output = encryptor.Encrypt(text, key);

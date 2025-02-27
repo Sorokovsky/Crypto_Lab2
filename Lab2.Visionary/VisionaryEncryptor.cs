@@ -1,5 +1,4 @@
 ﻿using Lab2.Common.Interfaces;
-using Lab2.Common.Tools;
 
 namespace Lab2.Visionary;
 
@@ -7,7 +6,7 @@ public class VisionaryEncryptor : IEncryptor
 {
     private readonly VisionaryTable _table;
 
-    public VisionaryEncryptor(string alphabet = Alphabets.En)
+    public VisionaryEncryptor(string alphabet)
     {
         Alphabet = alphabet;
         _table = VisionaryTable.Generate(alphabet);

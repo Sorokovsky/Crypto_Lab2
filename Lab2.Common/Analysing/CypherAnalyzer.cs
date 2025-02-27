@@ -48,13 +48,14 @@ public static class CypherAnalyzer
         var reversedCount = 1 / (double)alphabetCount;
         var doubleFrequencies = LettersStatistics.CollectFrequencies(text)
             .Sum(x => System.Math.Pow(x.Value, 2));
+        Console.WriteLine($"Середня частота появи літер: {doubleFrequencies}.");
         var concurrencyIndex = LettersStatistics.ConcurrencyIndex(text);
-        var upper = doubleFrequencies - reversedCount;
+        var upper = 0.065 - reversedCount;
         var downerLeft = concurrencyIndex - reversedCount;
         var downerRightTop = doubleFrequencies - concurrencyIndex;
         var downerRight = downerRightTop / text.Length;
         var downer = downerLeft + downerRight;
-        return upper / downer;
+        return System.Math.Round(upper / downer);
     }
 
     private static TextTable SplitByColumns(string text, int keyLength)

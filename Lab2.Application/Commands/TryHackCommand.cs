@@ -1,4 +1,5 @@
-﻿using Lab2.Commands.Chooser;
+﻿using Lab2.Application.Helpers;
+using Lab2.Commands.Chooser;
 using Lab2.Commands.Commands;
 using Lab2.Commands.Interfaces;
 using Lab2.Common.Analysing;
@@ -13,7 +14,8 @@ public class TryHackCommand : BasicCommand
     public override void Invoke(IExitable? exitable)
     {
         var text = Choosing.Text("текст");
-        CypherAnalyzer.TryHack(text, new VisionaryEncryptor(), EnterKey, EnterIsNotContinue);
+        var alphabet = CommandsHelper.ChooseAlphabets();
+        CypherAnalyzer.TryHack(text, new VisionaryEncryptor(alphabet.Letters), EnterKey, EnterIsNotContinue);
     }
 
     private static string EnterKey()

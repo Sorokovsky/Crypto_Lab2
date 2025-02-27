@@ -116,4 +116,13 @@ public class MatrixTests
         var result = matrix.Transpose();
         Assert.AreEqual(expected.ToString(), result.ToString());
     }
+
+    [TestMethod]
+    public void ShouldCorrectReverse()
+    {
+        var input = new Matrix<double>([[4, 7], [2, 6]]);
+        var expected = new Matrix<double>([[0.45, -0.35], [-0.2, 0.4]]);
+        var result = input.Reverse();
+        Assert.AreEqual(expected.ToString(), result.ToString());
+    }
 }

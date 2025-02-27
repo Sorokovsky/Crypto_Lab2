@@ -23,7 +23,7 @@ public partial class Matrix<T>
     {
         for (var row = 0; row < Rows; row++)
         for (var column = 0; column < Columns; column++)
-            callback.Invoke(row, column, _matrix[row][column]);
+            callback.Invoke(row, column, ElementAt(row, column));
     }
 
     private void Set(int row, int column, T value)

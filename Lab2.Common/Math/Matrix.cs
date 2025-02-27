@@ -25,6 +25,24 @@ public partial class Matrix<T> where T : INumber<T>
         return _matrix[row][column];
     }
 
+    public Matrix<T> Reverse()
+    {
+        var matrixTemp = new List<T[]>();
+        var temp = new List<T>();
+        var determinant = Determinant;
+        if (determinant.Equals(T.Zero)) throw new Exception("Визначник не може бути нулевим.");
+        var reversedDeterminant = (T)(dynamic)(1 / (double)(dynamic)determinant);
+        ForEach((row, column, _) =>
+        {
+            temp.Add(AlgebraicAddition(row, column));
+            if (column != Columns - 1) return;
+            matrixTemp.Add(temp.ToArray());
+            temp = [];
+        });
+        var matrix = new Matrix<T>(matrixTemp.ToArray()).Transpose();
+        return reversedDeterminant * matrix;
+    }
+
     private T Determinate()
     {
         if (Rows != Columns) throw new Exception("Матриця має бути квадратна.");

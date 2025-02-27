@@ -42,7 +42,7 @@ public class VisionaryTable
         var result = string.Empty;
         foreach (var rows in _table)
         {
-            foreach (var cell in rows) result += cell;
+            result = rows.Aggregate(result, (current, cell) => current + cell);
 
             result += "\n";
         }

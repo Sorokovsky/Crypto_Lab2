@@ -8,7 +8,7 @@ public static class LettersStatistics
             .Where(char.IsLetter)
             .Select(char.ToUpper)
             .ToArray().ToString();
-        var n = letters
+        var n = letters!
             .Length;
         if (n < 2) return 0;
         return CollectCount(letters).Values.Sum(f => f * (f - 1)) / (double)(n * (n - 1));

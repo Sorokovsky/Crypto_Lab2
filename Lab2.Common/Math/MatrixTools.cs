@@ -19,7 +19,14 @@ public partial class Matrix<T>
         return HashCode.Combine(_matrix, Columns, Rows);
     }
 
-    public void Set(int row, int column, T value)
+    private void ForEach(EachDelegate<T> callback)
+    {
+        for (var row = 0; row < Rows; row++)
+        for (var column = 0; column < Columns; column++)
+            callback.Invoke(row, column, _matrix[row][column]);
+    }
+
+    private void Set(int row, int column, T value)
     {
         if (row >= Rows || row < 0 || column >= Columns || column < 0)
             throw new ArgumentException("Індекси за межами.");
@@ -27,7 +34,7 @@ public partial class Matrix<T>
         _matrix[row][column] = value;
     }
 
-    public static Matrix<T> FromOnce(T item, int rows, int columns)
+    private static Matrix<T> FromOnce(T item, int rows, int columns)
     {
         var matrix = new List<T[]>();
         for (var i = 0; i < rows; i++)
@@ -46,13 +53,14 @@ public partial class Matrix<T>
         if (Rows != Columns) throw new Exception("Матриця має бути квадаратна.");
         if (Determinant == T.Zero) throw new Exception("Визначник не має бути нулевим.");
         var result = new List<T[]>();
-        for (var row = 0; row < Rows; row++)
+        var temp = new List<T>();
+        ForEach((row, column, _) =>
         {
-            var temp = new List<T>();
-            for (var column = 0; column < Columns; column++) temp.Add(ElementAt(column, row));
-
+            temp.Add(ElementAt(column, row));
+            if (column != Columns - 1) return;
             result.Add(temp.ToArray());
-        }
+            temp = [];
+        });
 
         return new Matrix<T>(result.ToArray());
     }
@@ -74,16 +82,11 @@ public partial class Matrix<T>
     public override string ToString()
     {
         var result = string.Empty;
-        for (var i = 0; i < Rows; i++)
+        ForEach((row, column, value) =>
         {
-            for (var j = 0; j < Columns; j++)
-            {
-                var end = j == Columns - 1 ? string.Empty : " ";
-                result += ElementAt(i, j) + end;
-            }
-
-            if (i != Rows - 1) result += "\n";
-        }
+            var end = column == Columns - 1 ? row == Rows - 1 ? string.Empty : "\n" : " ";
+            result += value + end;
+        });
 
         return result;
     }
@@ -121,18 +124,15 @@ public partial class Matrix<T>
             throw new ArgumentException("Індекси за межами.");
 
         var matrix = new List<T[]>();
-        for (var i = 0; i < Rows; i++)
+        List<T> temp = [];
+        ForEach((i, j, value) =>
         {
-            if (i == row) continue;
-            var temp = new List<T>();
-            for (var j = 0; j < Columns; j++)
-            {
-                if (j == column) continue;
-                temp.Add(ElementAt(i, j));
-            }
-
+            if (i == row || j == column) return;
+            temp.Add(value);
+            if (j != Columns - 1) return;
             matrix.Add(temp.ToArray());
-        }
+            temp = [];
+        });
 
         return new Matrix<T>(matrix.ToArray());
     }
@@ -140,14 +140,17 @@ public partial class Matrix<T>
     private Matrix<T> Clone()
     {
         var result = new List<T[]>();
-        for (var i = 0; i < Rows; i++)
+        var temp = new List<T>();
+        ForEach((_, column, value) =>
         {
-            var temp = new List<T>();
-            for (var j = 0; j < Columns; j++) temp.Add(ElementAt(i, j));
-
+            temp.Add(value);
+            if (column != Columns - 1) return;
             result.Add(temp.ToArray());
-        }
+            temp = [];
+        });
 
         return new Matrix<T>(result.ToArray());
     }
+
+    private delegate void EachDelegate<in TV>(int row, int column, TV value);
 }

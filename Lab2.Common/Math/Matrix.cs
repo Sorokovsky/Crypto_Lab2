@@ -39,17 +39,46 @@ public partial class Matrix<T> where T : INumber<T>
             matrixTemp.Add(temp.ToArray());
             temp.Clear();
         });
-        return new Matrix<T>(matrixTemp.ToArray()) * reversedDeterminant;
+        var matrix = new Matrix<T>(matrixTemp.ToArray());
+        Console.WriteLine(matrix);
+        return matrix * reversedDeterminant;
     }
 
     private T Determinate()
     {
         if (Rows != Columns) throw new Exception("Матриця має бути квадратна.");
+        return Rows switch
+        {
+            2 when Columns == 2 => Determinate2X2(),
+            3 when Columns == 3 => Determinate3X3(),
+            _ => DeterminateOfHigherMatrix()
+        };
+    }
+
+    private T Determinate2X2()
+    {
+        var first = ElementAt(0, 0) * ElementAt(1, 1);
+        var second = ElementAt(0, 1) * ElementAt(1, 0);
+        return first - second;
+    }
+
+    private T Determinate3X3()
+    {
+        var first = ElementAt(0, 0) * ElementAt(1, 1) * ElementAt(2, 2);
+        var second = ElementAt(1, 0) * ElementAt(2, 1) * ElementAt(0, 2);
+        var third = ElementAt(0, 1) * ElementAt(1, 2) * ElementAt(2, 0);
+        var fourth = ElementAt(0, 2) * ElementAt(1, 1) * ElementAt(2, 0);
+        var fifth = ElementAt(1, 2) * ElementAt(2, 1) * ElementAt(0, 0);
+        var sixth = ElementAt(0, 1) * ElementAt(1, 0) * ElementAt(2, 2);
+        return first + second + third - fourth - fifth - sixth;
+    }
+
+    private T DeterminateOfHigherMatrix()
+    {
         var det = T.One;
         var swaps = 0;
         var temp = Clone();
         var tolerance = T.One / (T)Convert.ChangeType(1e9, typeof(T));
-
         for (var column = 0; column < Columns; column++)
         {
             var pivotRow = column;

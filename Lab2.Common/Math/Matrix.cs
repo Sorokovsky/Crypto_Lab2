@@ -77,12 +77,7 @@ public partial class Matrix<T> where T : INumber<T>
     private T DeterminateOfHigherMatrix()
     {
         var determinant = T.Zero;
-        ForEach((row, column, value) =>
-        {
-            var even = (row + column) % 2 == 0;
-            var prefix = even ? -T.One : T.One;
-            determinant += prefix * value * Minor(row, column);
-        });
+        ForEach((row, column, value) => determinant += AlgebraicAddition(row, column) * value);
         return determinant;
     }
 }

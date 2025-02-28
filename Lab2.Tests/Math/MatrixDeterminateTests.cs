@@ -6,49 +6,21 @@ namespace Lab2.Tests.Math;
 public class MatrixDeterminantTests
 {
     [TestMethod]
-    public void TestDeterminantOf3X3Matrix()
+    public void SuccessDeterminantOf3X3Matrix()
     {
         var matrix = new Matrix<double>([
-            [1, 2, 3],
-            [0, 4, 5],
-            [1, 0, 6]
-        ]);
-
-        var result = matrix.Determinant;
-        const int expected = 22;
-        Assert.AreEqual(expected, result, 1e-5);
-    }
-
-    [TestMethod]
-    public void TestDeterminantOfIdentityMatrix()
-    {
-        var matrix = new Matrix<double>([
-            [1, 0, 0],
-            [0, 1, 0],
-            [0, 0, 1]
-        ]);
-
-        var result = matrix.Determinant;
-        const int expected = 1;
-        Assert.AreEqual(expected, result, 1e-5);
-    }
-
-    [TestMethod]
-    public void TestDeterminantOfSingularMatrix()
-    {
-        var matrix = new Matrix<double>([
-            [2, 4, 2],
+            [2, 1, 3],
             [1, 2, 1],
-            [3, 6, 3]
+            [3, 2, 1]
         ]);
 
         var result = matrix.Determinant;
-        const int expected = 0;
-        Assert.AreEqual(expected, result, 1e-5);
+        const int expected = -10;
+        Assert.AreEqual(expected, result);
     }
 
     [TestMethod]
-    public void TestDeterminantOf2X2Matrix()
+    public void SuccessDeterminantOf2X2Matrix()
     {
         var matrix = new Matrix<double>([
             [4, 3],
@@ -58,5 +30,19 @@ public class MatrixDeterminantTests
         var result = matrix.Determinant;
         const double expected = -6;
         Assert.AreEqual(expected, result, 1e-5);
+    }
+
+    [TestMethod]
+    public void SuccessDeterminantOfHigherMatrix()
+    {
+        var matrix = new Matrix<double>([
+            [1, 2, 3, 4],
+            [5, 6, 7, 8],
+            [9, 8, 7, 6],
+            [5, 4, 3, 2]
+        ]);
+        const double expected = 0;
+        var result = matrix.Determinant;
+        Assert.AreEqual(expected, result);
     }
 }

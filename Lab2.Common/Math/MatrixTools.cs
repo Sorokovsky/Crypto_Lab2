@@ -70,11 +70,15 @@ public partial class Matrix<T>
         if (row < 0 || row >= Rows || column < 0 || column >= Columns)
             throw new ArgumentException("Індекси за межами.");
 
-        var matrix = DeleteSection(row, column);
-        var left = (row + column) % 2 == 0 ? T.One : -T.One;
+        var minor = Minor(row, column);
+        return (row + column) % 2 == 0 ? minor : -minor;
+    }
 
-        var right = matrix.Determinant;
-        return left * right;
+    public T Minor(int row, int column)
+    {
+        if (row < 0 || row >= Rows || column < 0 || column >= Columns)
+            throw new ArgumentException("Індекси за межами.");
+        return DeleteSection(row, column).Determinant;
     }
 
     public override string ToString()
@@ -122,15 +126,18 @@ public partial class Matrix<T>
             throw new ArgumentException("Індекси за межами.");
 
         var matrix = new List<T[]>();
-        List<T> temp = [];
-        ForEach((i, j, value) =>
+        for (var i = 0; i < Rows; i++)
         {
-            if (i == row || j == column) return;
-            temp.Add(value);
-            if (j != Columns - 1) return;
+            if (i == row) continue;
+            var temp = new List<T>();
+            for (var j = 0; j < Columns; j++)
+            {
+                if (j == column) continue;
+                temp.Add(ElementAt(i, j));
+            }
+
             matrix.Add(temp.ToArray());
-            temp = [];
-        });
+        }
 
         return new Matrix<T>(matrix.ToArray());
     }

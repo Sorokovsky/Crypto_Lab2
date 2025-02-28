@@ -27,20 +27,19 @@ public partial class Matrix<T> where T : INumber<T>
 
     public Matrix<T> Reverse()
     {
+        var determinant = Determinant;
+        if (determinant.Equals(T.Zero)) throw new Exception("Матриця ме має оберненої.");
+        var reversedDeterminant = T.One / determinant;
         var matrixTemp = new List<T[]>();
         var temp = new List<T>();
-        var determinant = Determinant;
-        if (determinant.Equals(T.Zero)) throw new Exception("Визначник не може бути нулевим.");
-        var reversedDeterminant = T.One / determinant;
         ForEach((row, column, _) =>
         {
             temp.Add(AlgebraicAddition(column, row));
             if (column != Columns - 1) return;
             matrixTemp.Add(temp.ToArray());
-            temp = [];
+            temp.Clear();
         });
-        var matrix = new Matrix<T>(matrixTemp.ToArray());
-        return reversedDeterminant * matrix;
+        return new Matrix<T>(matrixTemp.ToArray()) * reversedDeterminant;
     }
 
     private T Determinate()

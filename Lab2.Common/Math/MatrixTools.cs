@@ -2,6 +2,8 @@
 
 public partial class Matrix<T>
 {
+    public delegate void EachDelegate<in TV>(int row, int column, TV value);
+
     public int Columns { get; }
     public int Rows { get; }
 
@@ -31,7 +33,7 @@ public partial class Matrix<T>
         return HashCode.Combine(_matrix, Columns, Rows);
     }
 
-    private void ForEach(EachDelegate<T> callback)
+    public void ForEach(EachDelegate<T> callback)
     {
         for (var row = 0; row < Rows; row++)
         for (var column = 0; column < Columns; column++)
@@ -151,6 +153,4 @@ public partial class Matrix<T>
 
         return new Matrix<T>(result.ToArray());
     }
-
-    private delegate void EachDelegate<in TV>(int row, int column, TV value);
 }

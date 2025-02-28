@@ -40,7 +40,6 @@ public partial class Matrix<T> where T : INumber<T>
             temp.Clear();
         });
         var matrix = new Matrix<T>(matrixTemp.ToArray());
-        Console.WriteLine(matrix);
         return matrix * reversedDeterminant;
     }
 
@@ -49,8 +48,10 @@ public partial class Matrix<T> where T : INumber<T>
         if (Rows != Columns) throw new Exception("Матриця має бути квадратна.");
         return Rows switch
         {
-            2 when Columns == 2 => Determinate2X2(),
-            3 when Columns == 3 => Determinate3X3(),
+            0 => T.One,
+            1 => ElementAt(0, 0),
+            2 => Determinate2X2(),
+            3 => Determinate3X3(),
             _ => DeterminateOfHigherMatrix()
         };
     }
@@ -75,47 +76,13 @@ public partial class Matrix<T> where T : INumber<T>
 
     private T DeterminateOfHigherMatrix()
     {
-        var det = T.One;
-        var swaps = 0;
-        var temp = Clone();
-        var tolerance = T.One / (T)Convert.ChangeType(1e9, typeof(T));
-        for (var column = 0; column < Columns; column++)
+        var determinant = T.Zero;
+        ForEach((row, column, value) =>
         {
-            var pivotRow = column;
-            var maxVal = T.Abs(temp.ElementAt(pivotRow, column));
-
-            for (var row = column + 1; row < Rows; row++)
-            {
-                var val = T.Abs(temp.ElementAt(row, column));
-                if (val > maxVal)
-                {
-                    pivotRow = row;
-                    maxVal = val;
-                }
-            }
-
-            if (maxVal < tolerance) return T.Zero;
-
-            if (pivotRow != column)
-            {
-                temp.SwapRows(column, pivotRow);
-                swaps++;
-            }
-
-            for (var row = column + 1; row < Rows; row++)
-            {
-                var factor = temp.ElementAt(row, column) / temp.ElementAt(column, column);
-                for (var j = column; j < Columns; j++)
-                {
-                    var old = temp.ElementAt(row, j);
-                    var value = old - factor * temp.ElementAt(column, j);
-                    temp.Set(row, j, value);
-                }
-            }
-
-            det *= temp.ElementAt(column, column);
-        }
-
-        return swaps % 2 == 0 ? det : -det;
+            var even = (row + column) % 2 == 0;
+            var prefix = even ? -T.One : T.One;
+            determinant += prefix * value * Minor(row, column);
+        });
+        return determinant;
     }
 }

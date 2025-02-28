@@ -17,16 +17,29 @@ public class HillEncryptor : IEncryptor
 
     public string Encrypt(string text, string key)
     {
+        return GetNewString(text, key, false);
+    }
+
+    public string Decrypt(string text, string key)
+    {
+        return GetNewString(text, key, true);
+    }
+
+    private string GetNewString(string text, string key, bool reversed)
+    {
         var mainMatrix = CreateMainMatrix(key);
+        if (reversed) mainMatrix = GenerateReversedMatrixForModule(mainMatrix, Alphabet.Letters.Length);
         var sumMatrixes = CreateTextMatrices(text);
         var resultMatrices = sumMatrixes.Select(x => mainMatrix * x).ToList();
         var result = new string(resultMatrices
             .Select(x =>
                 {
                     var temp = string.Empty;
-                    x.ForEach((row, column, value) =>
+                    x.ForEach((_, _, value) =>
                     {
-                        temp += Alphabet.Letters[(int)Math.Round(value) % Alphabet.Letters.Length];
+                        var module = Alphabet.Letters.Length;
+                        var index = value % module;
+                        temp += Alphabet.Letters[index];
                     });
                     return temp.ToArray();
                 }
@@ -40,16 +53,11 @@ public class HillEncryptor : IEncryptor
         return result;
     }
 
-    public string Decrypt(string text, string key)
-    {
-        throw new NotImplementedException();
-    }
-
-    private Matrix<double> CreateMainMatrix(string key)
+    private Matrix<int> CreateMainMatrix(string key)
     {
         var j = 0;
-        var tempMatrix = new List<double[]>();
-        var temp = new List<double>();
+        var tempMatrix = new List<int[]>();
+        var temp = new List<int>();
         foreach (var symbol in key)
         {
             var index = Alphabet.Letters.IndexOf(char.ToUpper(symbol));
@@ -62,27 +70,52 @@ public class HillEncryptor : IEncryptor
             temp = [];
         }
 
-        return new Matrix<double>(tempMatrix.ToArray());
+        return new Matrix<int>(tempMatrix.ToArray());
     }
 
-    private List<Matrix<double>> CreateTextMatrices(string text)
+    private List<Matrix<int>> CreateTextMatrices(string text)
     {
         var letters = text.Where(x => Alphabet.Letters.Contains(char.ToUpper(x))).ToArray();
         if (letters.Length % _n != 0)
             throw new ArgumentException("Довжина тексту(кількість літер) має ділитися на розмір матриці.");
-        var result = new List<Matrix<double>>();
+        var result = new List<Matrix<int>>();
         var i = 0;
-        var tempMatrix = new List<double[]>();
+        var tempMatrix = new List<int[]>();
         foreach (var index in letters.Select(symbol => Alphabet.Letters.IndexOf(char.ToUpper(symbol))))
         {
             tempMatrix.Add([index]);
             i++;
             if (i != _n) continue;
             i = 0;
-            result.Add(new Matrix<double>(tempMatrix.ToArray()));
+            result.Add(new Matrix<int>(tempMatrix.ToArray()));
             tempMatrix.Clear();
         }
 
         return result;
+    }
+
+    private static Matrix<int> GenerateReversedMatrixForModule(Matrix<int> matrix, int module)
+    {
+        var determinate = matrix.Determinant;
+        for (var i = 0; i < module; i++)
+        {
+            if (i * determinate % module != 1) continue;
+            determinate = i;
+            break;
+        }
+
+        var matrixTemp = new List<int[]>();
+        var temp = new List<int>();
+        matrix.ForEach((row, column, _) =>
+        {
+            var result = matrix.AlgebraicAddition(column, row) * determinate;
+            temp.Add((result + module) % module);
+            if (column == matrix.Columns - 1)
+            {
+                matrixTemp.Add(temp.ToArray());
+                temp.Clear();
+            }
+        });
+        return new Matrix<int>(matrixTemp.ToArray());
     }
 }

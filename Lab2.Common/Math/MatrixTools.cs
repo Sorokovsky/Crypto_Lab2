@@ -40,7 +40,7 @@ public partial class Matrix<T>
             callback.Invoke(row, column, ElementAt(row, column));
     }
 
-    private void Set(int row, int column, T value)
+    public void Set(int row, int column, T value)
     {
         if (row >= Rows || row < 0 || column >= Columns || column < 0)
             throw new ArgumentException("Індекси за межами.");

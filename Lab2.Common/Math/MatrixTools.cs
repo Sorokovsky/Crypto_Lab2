@@ -2,10 +2,22 @@
 
 public partial class Matrix<T>
 {
+    public int Columns { get; }
+    public int Rows { get; }
+
+    public T Determinant => Determinate();
+
     public override bool Equals(object? obj)
     {
         if (obj is Matrix<T> matrix) return Equals(matrix);
         return false;
+    }
+
+    public T ElementAt(int row, int column)
+    {
+        if (row >= Rows || row < 0) throw new ArgumentException($"Індекс рядка має бути 0-{Rows - 1}.");
+        if (column >= Columns || column < 0) throw new ArgumentException($"Індекс колонки має бути 0-{Columns - 1}.");
+        return _matrix[row][column];
     }
 
     private bool Equals(Matrix<T> matrix)
@@ -105,19 +117,6 @@ public partial class Matrix<T>
     private int CalculateRowsCount()
     {
         return _matrix.Length;
-    }
-
-    private void SwapRows(int row1, int row2)
-    {
-        if (row1 < 0 || row1 >= Rows || row2 < 0 || row2 >= Rows)
-            throw new ArgumentException("Один з індексів за межами.");
-
-        for (var i = 0; i < Columns; i++)
-        {
-            var temp = ElementAt(row1, i);
-            Set(row1, i, ElementAt(row2, i));
-            Set(row2, i, temp);
-        }
     }
 
     private Matrix<T> DeleteSection(int row, int column)

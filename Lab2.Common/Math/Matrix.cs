@@ -13,18 +13,6 @@ public partial class Matrix<T> where T : INumber<T>
         Columns = CalculateColumnsCount();
     }
 
-    public int Columns { get; }
-    public int Rows { get; }
-
-    public T Determinant => Determinate();
-
-    public T ElementAt(int row, int column)
-    {
-        if (row >= Rows || row < 0) throw new ArgumentException($"Індекс рядка має бути 0-{Rows - 1}.");
-        if (column >= Columns || column < 0) throw new ArgumentException($"Індекс колонки має бути 0-{Columns - 1}.");
-        return _matrix[row][column];
-    }
-
     public Matrix<T> Reverse()
     {
         var determinant = Determinant;

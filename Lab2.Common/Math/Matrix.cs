@@ -22,12 +22,12 @@ public partial class Matrix<T> where T : INumber<T>
         var temp = new List<T>();
         ForEach((row, column, _) =>
         {
-            temp.Add(AlgebraicAddition(column, row));
+            temp.Add(AlgebraicAddition(row, column));
             if (column != Columns - 1) return;
             matrixTemp.Add(temp.ToArray());
             temp.Clear();
         });
-        var matrix = new Matrix<T>(matrixTemp.ToArray());
+        var matrix = new Matrix<T>(matrixTemp.ToArray()).Transpose();
         return matrix * reversedDeterminant;
     }
 

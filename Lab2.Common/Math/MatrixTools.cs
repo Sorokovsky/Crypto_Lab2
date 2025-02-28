@@ -83,7 +83,8 @@ public partial class Matrix<T>
             throw new ArgumentException("Індекси за межами.");
 
         var minor = Minor(row, column);
-        return (row + column) % 2 == 0 ? minor : -minor;
+        var result = (row + column) % 2 == 0 ? minor : -minor;
+        return result;
     }
 
     public T Minor(int row, int column)
@@ -124,21 +125,16 @@ public partial class Matrix<T>
         if (row < 0 || row >= Rows || column < 0 || column >= Columns)
             throw new ArgumentException("Індекси за межами.");
 
-        var matrix = new List<T[]>();
-        for (var i = 0; i < Rows; i++)
-        {
-            if (i == row) continue;
-            var temp = new List<T>();
-            for (var j = 0; j < Columns; j++)
-            {
-                if (j == column) continue;
-                temp.Add(ElementAt(i, j));
-            }
-
-            matrix.Add(temp.ToArray());
-        }
-
-        return new Matrix<T>(matrix.ToArray());
+        var matrix = new Matrix<T>(Enumerable
+            .Range(0, Rows)
+            .Where(i => i != row)
+            .Select(i => Enumerable
+                .Range(0, Columns)
+                .Where(j => j != column)
+                .Select(j => ElementAt(i, j))
+                .ToArray())
+            .ToArray());
+        return matrix;
     }
 
     private Matrix<T> Clone()

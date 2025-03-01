@@ -14,7 +14,6 @@ public class TryHackCommand : BasicCommand
     {
         var text = TextHelper.ChooseInput("текст").Invoke();
         var encryptor = EncryptorsHelper.Choose();
-        var alphabet = CommandsHelper.ChooseAlphabets();
         TextHelper.ChooseOutput("розшифрований текст")
             .Invoke(CypherAnalyzer.TryHack(text, encryptor, EnterKey, EnterIsNotContinue));
     }

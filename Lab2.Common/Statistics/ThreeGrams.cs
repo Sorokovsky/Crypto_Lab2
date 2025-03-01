@@ -16,7 +16,7 @@ public static class ThreeGrams
     {
         var indexes = CollectIndexes(input, threeGram);
         var firstIndex = indexes.First();
-        return indexes.Skip(1).Select(index => index - firstIndex).ToList();
+        return indexes.Skip(1).Take(2).Select(index => index - firstIndex).ToList();
     }
 
     private static List<int> CollectIndexes(string input, string threeGram)

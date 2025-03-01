@@ -19,23 +19,41 @@ public static class Choosing
                 return list.First();
         }
 
+        var isError = false;
+
         Console.WriteLine($"Виберіть зі \"{listName}\": ");
         list.ForEach(x => Console.WriteLine($"{nameGetter(x)}"));
         Console.Write(">> ");
-        var result = resultGetter(Console.ReadLine() ?? string.Empty);
+        var result = ResultWrapper();
         var item = list.FirstOrDefault(x => listGetter(x, result));
-        while (IsNull(item))
+        while (IsNull(item) || isError)
         {
+            isError = false;
             if (retry is false) throw new Exception("Відповідь не розпізнано.");
             Console.WriteLine("Відповідь не розпізнано, спробуйте ще.");
             Console.WriteLine($"Виберіть {listName}: ");
             list.ForEach(x => Console.WriteLine($"{nameGetter(x)}"));
             Console.Write(">> ");
-            result = resultGetter(Console.ReadLine() ?? string.Empty);
+            result = ResultWrapper();
             item = list.FirstOrDefault(x => listGetter(x, result));
         }
 
-        return item;
+        return item!;
+
+        TK ResultWrapper()
+        {
+            var resultWrapper = default(TK)!;
+            try
+            {
+                resultWrapper = resultGetter(Console.ReadLine() ?? string.Empty);
+                return resultWrapper;
+            }
+            catch (Exception)
+            {
+                isError = true;
+                return resultWrapper;
+            }
+        }
     }
 
     public static string Text(string name)
@@ -48,11 +66,11 @@ public static class Choosing
     {
         const string variants = "(0-ні, 1-так)";
         Console.Write($"{question} {variants}: ");
-        var choose = int.Parse(Console.ReadLine() ?? string.Empty);
-        while (choose != 0 && choose != 1)
+        var isError = TryReadAndParseForNumber(out var choose);
+        while (isError || (choose != 0 && choose != 1))
         {
             Console.Write($"Відповідь не розпізнано, спробуйте ще {variants}: ");
-            choose = int.Parse(Console.ReadLine() ?? string.Empty);
+            isError = TryReadAndParseForNumber(out choose);
         }
 
         return choose == 1;
@@ -61,34 +79,51 @@ public static class Choosing
     public static int Number(string name, int? min, int? max)
     {
         Console.Write($"Введіть {name}: ");
-        var value = int.Parse(Console.ReadLine() ?? string.Empty);
-        if (min is not null)
-            while (value < min)
-            {
-                Console.Write($"Число має бути більше за {min}, спробуйте ще: ");
-                value = int.Parse(Console.ReadLine() ?? string.Empty);
-            }
+        var isError = TryReadAndParseForNumber(out var value);
+        while (isError)
+        {
+            Console.Write($"Ви ввели {value}(не число), спробуйте ще: ");
+            isError = TryReadAndParseForNumber(out value);
+            if (min is not null)
+                while (value < min)
+                {
+                    Console.Write($"Число має бути більше за {min}, спробуйте ще: ");
+                    isError = TryReadAndParseForNumber(out value);
+                }
 
-        if (max is not null)
-            while (value > max)
-            {
-                Console.Write($"Число має бути меньше за {max}, спробуйте ще: ");
-                value = int.Parse(Console.ReadLine() ?? string.Empty);
-            }
+            if (max is not null)
+                while (value > max)
+                {
+                    Console.Write($"Число має бути меньше за {max}, спробуйте ще: ");
+                    isError = TryReadAndParseForNumber(out value);
+                }
+        }
 
         return value;
     }
 
-    private static bool IsNull(dynamic item)
+    private static bool IsNull(object? item)
     {
-        if (item.Equals(null)) return true;
         try
         {
-            return item.Value.Equals(null);
+            if (item == null) return true;
+            var type = item.GetType();
+            var propValue = type.GetProperty("Value");
+            var propKey = type.GetProperty("Key");
+            if (propValue is not null && propKey is not null)
+                return propKey.GetValue(item) == null || propValue.GetValue(item) == null;
+
+            return false;
         }
         catch (Exception)
         {
             return false;
         }
+    }
+
+    private static bool TryReadAndParseForNumber(out int value)
+    {
+        var text = Console.ReadLine() ?? string.Empty;
+        return int.TryParse(text, out value) || text.Any(x => x is < '0' or > '9');
     }
 }

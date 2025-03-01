@@ -11,6 +11,7 @@ public static class CypherAnalyzer
         Func<bool> notContinueGetter)
     {
         var keyLength = GetKeyLength(text);
+        if (keyLength == 0) throw new Exception("Довжина ключа 0");
         var concurrencyIndex = LettersStatistics.ConcurrencyIndex(text);
         Console.WriteLine($"Індекс збігу: {concurrencyIndex}");
         Console.WriteLine($"Довжина ключа: {keyLength}.");

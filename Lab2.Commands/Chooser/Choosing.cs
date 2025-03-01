@@ -124,6 +124,9 @@ public static class Choosing
     private static bool TryReadAndParseForNumber(out int value)
     {
         var text = Console.ReadLine() ?? string.Empty;
-        return int.TryParse(text, out value) || text.Any(x => x is < '0' or > '9');
+        var isNotNumber = text.Any(x => x is < '0' or > '9') || text == string.Empty;
+        var isNotParsed = int.TryParse(text, out var result) == false;
+        value = result;
+        return isNotParsed || isNotNumber;
     }
 }

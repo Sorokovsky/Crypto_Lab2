@@ -8,8 +8,8 @@ public static class ThreeGrams
 
     public static string GetMostPopularThreeGram(string input)
     {
-        return FindInText(input)
-            .MaxBy(x => x.Value).Key;
+        var result = FindInText(input);
+        return result.First().Key;
     }
 
     public static List<int> GetDestinations(string input, string threeGram)
@@ -21,9 +21,8 @@ public static class ThreeGrams
 
     private static List<int> CollectIndexes(string input, string threeGram)
     {
-        var indexes = Collect(input)
-            .First(x => x.Key == threeGram);
-        return indexes.Value;
+        var indexes = Collect(input);
+        return indexes.First(x => x.Key == threeGram).Value;
     }
 
     private static Dictionary<string, int> FindInText(string input)
@@ -37,7 +36,6 @@ public static class ThreeGrams
         var result = ThreeGramsByText.GetValueOrDefault(input.ToUpper());
         if (result != null) return result;
         result = new Dictionary<string, List<int>>();
-        ThreeGramsByText.TryAdd(input, result);
         for (var i = 2; i < input.Length; i++)
         {
             var startIndex = i - 2;
@@ -48,6 +46,10 @@ public static class ThreeGrams
             result.GetValueOrDefault(threeGram)?.Add(startIndex);
         }
 
+        result = result
+            .OrderByDescending(x => x.Value.Count)
+            .ToDictionary(x => x.Key, x => x.Value);
+        ThreeGramsByText.TryAdd(input.ToUpper(), result);
         return result;
     }
 }

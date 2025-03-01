@@ -47,13 +47,13 @@ public static class CypherAnalyzer
 
     private static double FreedmanKeyLength(string text, (string Letters, double Frequencies) alphabet)
     {
-        var reversedCount = 1 / (double)alphabet.Letters.Length;
-        var doubleFrequencies = alphabet.Frequencies;
-        Console.WriteLine($"Середня частота появи літер: {doubleFrequencies}.");
+        var reversedCount = 1.0 / alphabet.Letters.Length;
+        var averageFrequencies = alphabet.Frequencies;
+        Console.WriteLine($"Середня частота появи літер: {averageFrequencies}.");
         var concurrencyIndex = LettersStatistics.ConcurrencyIndex(text);
-        var upper = doubleFrequencies - reversedCount;
+        var upper = averageFrequencies - reversedCount;
         var downerLeft = concurrencyIndex - reversedCount;
-        var downerRightTop = doubleFrequencies - concurrencyIndex;
+        var downerRightTop = averageFrequencies - concurrencyIndex;
         var downerRight = downerRightTop / text.Length;
         var downer = downerLeft + downerRight;
         return System.Math.Round(upper / downer);

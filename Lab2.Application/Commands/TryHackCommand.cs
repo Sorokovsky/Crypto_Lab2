@@ -13,7 +13,7 @@ public class TryHackCommand : BasicCommand
 
     public override void Invoke(IExitable? exitable)
     {
-        var text = Choosing.Text("текст");
+        var text = TextHelper.ChooseInput("текст").Invoke();
         var alphabet = CommandsHelper.ChooseAlphabets();
         CypherAnalyzer.TryHack(text, new VisionaryEncryptor(alphabet), EnterKey, EnterIsNotContinue);
     }

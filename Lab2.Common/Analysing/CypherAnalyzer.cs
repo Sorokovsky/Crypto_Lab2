@@ -40,6 +40,7 @@ public static class CypherAnalyzer
         var popularThreeGram = ThreeGrams.GetMostPopularThreeGram(text);
         Console.WriteLine($"Найпопулярніша триграма: {popularThreeGram}.");
         var lengthBetweenFirstLetters = ThreeGrams.GetDestinations(text, popularThreeGram);
+        if (lengthBetweenFirstLetters.Count == 0) return 0;
         return Number.Gcd(lengthBetweenFirstLetters);
     }
 

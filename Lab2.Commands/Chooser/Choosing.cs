@@ -57,4 +57,25 @@ public static class Choosing
 
         return choose == 1;
     }
+
+    public static int Number(string name, int? min, int? max)
+    {
+        Console.Write($"Введіть {name}: ");
+        var value = int.Parse(Console.ReadLine() ?? string.Empty);
+        if (min is not null)
+            while (value < min)
+            {
+                Console.Write($"Число має бути більше за {min}, спробуйте ще: ");
+                value = int.Parse(Console.ReadLine() ?? string.Empty);
+            }
+
+        if (max is not null)
+            while (value > max)
+            {
+                Console.Write($"Число має бути меньше за {max}, спробуйте ще: ");
+                value = int.Parse(Console.ReadLine() ?? string.Empty);
+            }
+
+        return value;
+    }
 }

@@ -10,6 +10,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Lab2.Commands\Lab2.Commands.csproj"/>
       <ProjectReference Include="..\Lab2.Common\Lab2.Common.csproj" />
+        <ProjectReference Include="..\Lab2.Hill\Lab2.Hill.csproj"/>
       <ProjectReference Include="..\Lab2.Visionary\Lab2.Visionary.csproj" />
     </ItemGroup>
 

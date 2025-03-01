@@ -7,24 +7,24 @@ namespace Lab2.Application.Helpers;
 
 public static class EncryptorsHelper
 {
-    private static readonly List<string> Encryptors = ["Криптосистема віженера", "Криптосистема хіла"];
+    private static readonly List<string> Encryptors = ["Криптосистема Віженера", "Криптосистема Хіла"];
 
     public static IEncryptor Choose()
     {
         var encryptor = Choosing
-            .FromList(Encryptors.Select(x => Encryptors.IndexOf(x)).ToList(),
-                s => $"{s}-{Encryptors[s]}",
+            .FromList(Encryptors,
+                s => $"{Encryptors.IndexOf(s)}-{s}.",
                 int.Parse,
-                (s, b) => s == b,
+                (s, b) => Encryptors.IndexOf(s) == b,
                 "криптосистеми"
             );
-        if (Encryptors[encryptor] == "Криптосистема віженера")
+        if (encryptor == "Криптосистема Віженера")
         {
             var alphabet = CommandsHelper.ChooseAlphabets();
             return new VisionaryEncryptor(alphabet);
         }
 
-        if (Encryptors[encryptor] == "Криптосистема хіла")
+        if (encryptor == "Криптосистема Хіла")
         {
             var alphabet = CommandsHelper.ChooseAlphabets();
             var n = Choosing.Number("розмір головної матриці", 0, null);

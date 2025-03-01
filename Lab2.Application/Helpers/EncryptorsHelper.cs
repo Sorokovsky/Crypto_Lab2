@@ -7,30 +7,41 @@ namespace Lab2.Application.Helpers;
 
 public static class EncryptorsHelper
 {
-    private static readonly List<string> Encryptors = ["Криптосистема Віженера", "Криптосистема Хіла"];
+    private static readonly IReadOnlyDictionary<string, Func<IEncryptor>> Encryptors =
+        new Dictionary<string, Func<IEncryptor>>
+        {
+            {
+                "Криптосистема Віженера",
+                BuildVisionaryEncryptor
+            },
+            {
+                "Криптосистема Хіла",
+                BuildHillEncryptor
+            }
+        };
 
     public static IEncryptor Choose()
     {
-        var encryptor = Choosing
-            .FromList(Encryptors,
-                s => $"{Encryptors.IndexOf(s)}-{s}.",
+        var list = Encryptors.ToList();
+        return Choosing
+            .FromList(list,
+                s => $"{list.IndexOf(s)}-{s.Key}.",
                 int.Parse,
-                (s, b) => Encryptors.IndexOf(s) == b,
+                (s, b) => list.IndexOf(s) == b,
                 "криптосистеми"
-            );
-        if (encryptor == "Криптосистема Віженера")
-        {
-            var alphabet = CommandsHelper.ChooseAlphabets();
-            return new VisionaryEncryptor(alphabet);
-        }
+            ).Value();
+    }
 
-        if (encryptor == "Криптосистема Хіла")
-        {
-            var alphabet = CommandsHelper.ChooseAlphabets();
-            var n = Choosing.Number("розмір головної матриці", 0, null);
-            return new HillEncryptor(alphabet, n);
-        }
+    private static IEncryptor BuildVisionaryEncryptor()
+    {
+        var alphabet = CommandsHelper.ChooseAlphabets();
+        return new VisionaryEncryptor(alphabet);
+    }
 
-        throw new Exception("Криптосистему не знайдено.");
+    private static IEncryptor BuildHillEncryptor()
+    {
+        var alphabet = CommandsHelper.ChooseAlphabets();
+        var n = Choosing.Number("розмір головної матриці", 0, null);
+        return new HillEncryptor(alphabet, n);
     }
 }

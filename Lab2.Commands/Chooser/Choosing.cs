@@ -24,7 +24,7 @@ public static class Choosing
         Console.Write(">> ");
         var result = resultGetter(Console.ReadLine() ?? string.Empty);
         var item = list.FirstOrDefault(x => listGetter(x, result));
-        while (item is null)
+        while (IsNull(item))
         {
             if (retry is false) throw new Exception("Відповідь не розпізнано.");
             Console.WriteLine("Відповідь не розпізнано, спробуйте ще.");
@@ -77,5 +77,18 @@ public static class Choosing
             }
 
         return value;
+    }
+
+    private static bool IsNull(dynamic item)
+    {
+        if (item.Equals(null)) return true;
+        try
+        {
+            return item.Value.Equals(null);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 }

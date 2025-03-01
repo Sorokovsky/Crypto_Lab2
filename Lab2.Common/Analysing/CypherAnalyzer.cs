@@ -14,12 +14,15 @@ public static class CypherAnalyzer
         if (keyLength == 0) throw new Exception("Довжина ключа 0");
         var concurrencyIndex = LettersStatistics.ConcurrencyIndex(text);
         Console.WriteLine($"Індекс збігу: {concurrencyIndex}");
-        Console.WriteLine($"Довжина ключа: {keyLength}.");
-        Console.WriteLine($"Довжина ключа за Фрідменом: {FreedmanKeyLength(text, encryptor.Alphabet)}.");
-        var split = SplitByColumns(text, keyLength);
+        Console.WriteLine($"Довжина ключа за методом Квазікі: {keyLength}.");
+        var freedmanKeyLength = FreedmanKeyLength(text, encryptor.Alphabet);
+        var keyLengthResult = keyLength;
+        Console.WriteLine($"Довжина ключа за Фрідменом: {freedmanKeyLength}.");
+        Console.WriteLine($"Довжина ключа: {keyLengthResult}.");
+        var split = SplitByColumns(text, keyLengthResult);
         Console.WriteLine("По рядкам.");
         Console.WriteLine(split);
-        var stats = GetStatistics(split, keyLength);
+        var stats = GetStatistics(split, keyLengthResult);
         var finished = false;
         var output = string.Empty;
         while (finished is false)

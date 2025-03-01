@@ -11,17 +11,23 @@ public static class LettersStatistics
         var n = letters!
             .Length;
         if (n < 2) return 0;
-        return CollectCount(letters).Values.Sum(f => f * (f - 1)) / (double)(n * (n - 1));
+        var counters = CollectCount(letters)
+            .OrderByDescending(x => x.Value)
+            .ToDictionary(x => x.Key, x => x.Value);
+        var frequencies = CollectCount(letters)
+            .OrderByDescending(x => x.Value)
+            .ToDictionary(x => x.Key, x => x.Value);
+        return frequencies.Values.Sum(f => f * (f - 1)) / (double)(n * (n - 1));
     }
 
-    public static IReadOnlyDictionary<char, double> CollectFrequencies(IEnumerable<char> text)
+    public static Dictionary<char, double> CollectFrequencies(IEnumerable<char> text)
     {
         var letters = text.Where(char.IsLetter).ToArray();
         return CollectCount(letters)
             .ToDictionary(x => x.Key, x => x.Value / (double)letters.Length);
     }
 
-    private static IReadOnlyDictionary<char, int> CollectCount(IEnumerable<char> text)
+    public static IReadOnlyDictionary<char, int> CollectCount(IEnumerable<char> text)
     {
         var letters = text
             .Where(char.IsLetter)

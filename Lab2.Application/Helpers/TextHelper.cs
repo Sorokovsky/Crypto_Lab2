@@ -18,7 +18,7 @@ public static class TextHelper
         {
             var filesService = new FilesService();
             var fileName = Choosing.Text("назву файлу");
-            action = () => filesService.Read($"{fileName}.txt");
+            action = () => filesService.Read($"{fileName}");
         }
         else
         {
@@ -36,7 +36,7 @@ public static class TextHelper
         {
             var filesService = new FilesService();
             var fileName = Choosing.Text("назву файлу");
-            action = text => filesService.Create($"{fileName}.txt", text);
+            action = text => filesService.Rewrite($"{fileName}", text);
         }
         else
         {

@@ -48,11 +48,10 @@ public static class CypherAnalyzer
     private static double FreedmanKeyLength(string text, (string Letters, double Frequencies) alphabet)
     {
         var reversedCount = 1 / (double)alphabet.Letters.Length;
-        var doubleFrequencies = LettersStatistics.CollectFrequencies(text)
-            .Sum(x => System.Math.Pow(x.Value, 2));
+        var doubleFrequencies = alphabet.Frequencies;
         Console.WriteLine($"Середня частота появи літер: {doubleFrequencies}.");
         var concurrencyIndex = LettersStatistics.ConcurrencyIndex(text);
-        var upper = 0.065 - reversedCount;
+        var upper = doubleFrequencies - reversedCount;
         var downerLeft = concurrencyIndex - reversedCount;
         var downerRightTop = doubleFrequencies - concurrencyIndex;
         var downerRight = downerRightTop / text.Length;

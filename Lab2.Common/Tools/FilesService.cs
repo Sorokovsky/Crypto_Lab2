@@ -35,12 +35,17 @@ public class FilesService
 
     public void Rewrite(string path, string text)
     {
-        Write(path, text, true);
+        if (Exists(path)) Write(path, text, true);
+        else Create(path, text);
     }
 
     public void Create(string path, string text)
     {
-        Write(path, text);
+        var fullPath = GetPath(path);
+        const FileMode mode = FileMode.Create;
+        using var stream = File.Open(fullPath, mode);
+        using var writer = new StreamWriter(stream);
+        writer.Write(text);
     }
 
     private string GetPath(string filePath)

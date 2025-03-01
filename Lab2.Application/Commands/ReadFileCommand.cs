@@ -12,7 +12,7 @@ public class ReadFileCommand : BasicCommand
     public override void Invoke(IExitable? exitable)
     {
         var files = new FilesService();
-        var file = $"{Choosing.Text("Введіть назву файлу")}.txt";
+        var file = $"{Choosing.Text("назву файлу")}";
         var text = files.Read(file);
         Console.WriteLine($"Зміст файлу {file}: ");
         Console.WriteLine(text);

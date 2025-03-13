@@ -3,9 +3,11 @@
 public static class Alphabets
 {
     public static readonly (string Letters, double Frequencies) En = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 0.065);
+    public static readonly (string Letters, double Frequencies) Ukr = ("АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ", 0.065);
 
     public static Dictionary<string, (string, double)> All = new()
     {
-        { "En", En }
+        { "En", En },
+        { "Ukr", Ukr }
     };
 }

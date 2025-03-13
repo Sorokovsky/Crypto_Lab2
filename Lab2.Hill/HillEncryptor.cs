@@ -109,6 +109,8 @@ public class HillEncryptor : IEncryptor
         matrix.ForEach((row, column, _) =>
         {
             var result = matrix.AlgebraicAddition(column, row) * determinate;
+            while (result < 0) result += module;
+
             temp.Add((result + module) % module);
             if (column == matrix.Columns - 1)
             {

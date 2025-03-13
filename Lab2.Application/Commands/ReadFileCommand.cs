@@ -13,7 +13,7 @@ public class ReadFileCommand : BasicCommand
     {
         var files = new FilesService();
         var file = $"{Choosing.Text("назву файлу")}";
-        var text = files.Read(file);
+        var text = files.Read($"{file}.txt");
         Console.WriteLine($"Зміст файлу {file}: ");
         Console.WriteLine(text);
     }

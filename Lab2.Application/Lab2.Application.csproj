@@ -15,6 +15,8 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="bin\Debug\net9.0\files\hill.txt"/>
+        <Content Include="bin\Debug\net9.0\files\key.txt"/>
         <Content Include="bin\Debug\net9.0\files\output.txt"/>
         <Content Include="bin\Debug\net9.0\files\second.txt"/>
         <Content Include="bin\Debug\net9.0\files\test.txt"/>
